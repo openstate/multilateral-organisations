@@ -10,16 +10,16 @@ services:
       - ../files/:/usr/share/nginx/html/files/
     networks:
       - nginx-load-balancer
-      - stm
+      - mlo
     restart: always
   app:
     build:
       context: .
       dockerfile: Dockerfile-app
     volumes:
-      - ../:/opt/stm
+      - ../:/opt/mlo
     networks:
-      - stm
+      - mlo
     restart: always
   mysql:
     image: mysql:5.7.21
@@ -27,28 +27,28 @@ services:
     # the backup that will be restored from a .sql file in the
     # docker-entrypoint-initdb.d directory.
     environment:
-      - MYSQL_DATABASE=stembureaus
+      - MYSQL_DATABASE=mlo
       - MYSQL_ROOT_PASSWORD=<DB_PASSWORD>
     networks:
-      - stm
+      - mlo
     volumes:
-      - stm-mysql-volume:/var/lib/mysql
+      - mlo-mysql-volume:/var/lib/mysql
       - "./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
     restart: always
   nodejs:
     image: node:5.4.1
-    working_dir: /opt/stm
+    working_dir: /opt/mlo
     volumes:
-      - ../app:/opt/stm
+      - ../app:/opt/mlo
     networks:
-      - stm
+      - mlo
     # Use this to keep the container running
     tty: true
     restart: always
 networks:
-  stm:
+  mlo:
   nginx-load-balancer:
     external:
       name: docker_nginx-load-balancer
 volumes:
-  stm-mysql-volume:
+  mlo-mysql-volume:

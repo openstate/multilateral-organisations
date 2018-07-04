@@ -8,7 +8,6 @@ from config import Config
 from flask import Flask
 from flask_babel import Babel
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 from flask_mail import Mail
 
 app = Flask(__name__)
@@ -20,11 +19,6 @@ mail = Mail(app)
 
 # Used for translating error messages for Flask-WTF forms
 babel = Babel(app)
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_message = u"Log in om verder te gaan"
-login_manager.login_view = "gemeente_login"
 
 locale.setlocale(locale.LC_NUMERIC, 'nl_NL.UTF-8')
 
@@ -43,7 +37,7 @@ if not app.debug:
             mailhost=(app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
             fromaddr=app.config['FROM'],
             toaddrs=app.config['ADMINS'],
-            subject='[Stemlokalen] website error',
+            subject='[Multilaterale Organisaties] website error',
             credentials=auth,
             secure=secure
         )
@@ -54,7 +48,7 @@ if not app.debug:
     if not os.path.exists('logs'):
         os.mkdir('logs')
     file_handler = RotatingFileHandler(
-        'logs/stemlokalen.log',
+        'logs/mlo.log',
         maxBytes=1000000,
         backupCount=10
     )
@@ -67,4 +61,4 @@ if not app.debug:
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
     app.logger.setLevel(logging.INFO)
-    app.logger.info('Stemlokalen startup')
+    app.logger.info('Multilaterale Organisaties startup')

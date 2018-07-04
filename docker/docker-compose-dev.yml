@@ -16,5 +16,5 @@ services:
   nodejs:
     restart: "no"
 networks:
-  stm:
+  mlo:
   nginx-load-balancer:

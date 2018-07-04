@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y gdal-bin unzip
 RUN sed -i -e 's/# nl_NL.UTF-8 UTF-8/nl_NL.UTF-8 UTF-8/' /etc/locale.gen \
     && dpkg-reconfigure --frontend=noninteractive locales
 
-WORKDIR /opt/stm
+WORKDIR /opt/mlo
 RUN pip install --upgrade pip
 COPY requirements.txt .
 RUN pip install -r requirements.txt
