@@ -1,5 +1,6 @@
 #/usr/bin/env python
 # -*- coding: utf-8 -*-
+import dash
 import locale
 import os
 import logging
@@ -11,6 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 
 app = Flask(__name__)
+dash_app = dash.Dash(__name__, server=app, url_base_pathname="/dash")
 app.config.from_object(Config)
 
 db = SQLAlchemy(app)

@@ -21,7 +21,6 @@ def load_data(csv_file):
     total_created = 0
 
     with open(csv_file) as IN:
-        #TODO as dict
         reader = csv.DictReader(IN)
         for record in reader:
             nato = NATO(

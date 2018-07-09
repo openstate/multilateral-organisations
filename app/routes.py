@@ -2,10 +2,15 @@ import csv
 import os
 import sys
 
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import plotly.graph_objs as go
+
 from flask import render_template, request, redirect, url_for, flash, Markup
 from sqlalchemy.sql import func
 
-from app import app, db
+from app import app, dash_app, db
 from app.forms import SelectionForm
 from app.models import NATO
 
@@ -34,6 +39,49 @@ def get_values(country, value_type='sum'):
             nato_values_dict[year] = len(amounts)
 
     return nato_values_dict
+
+
+## Dash visualisation
+# Retrieve unique countries
+unique_countries = NATO.query.with_entities(NATO.vendor_country).distinct().all()
+app.logger.info(unique_countries)
+
+# Layout
+dash_app.layout = html.Div(children=[
+    dcc.Dropdown(
+        id='yaxis-column',
+        options=[{'label': i[0], 'value': i[0]} for i in unique_countries],
+        value='Netherlands'
+    ),
+
+    dcc.Graph(id='indicator-graphic')
+])
+
+# Update callback for figure
+@dash_app.callback(
+    dash.dependencies.Output('indicator-graphic', 'figure'),
+    [
+        dash.dependencies.Input('yaxis-column', 'value')
+    ]
+)
+def update_graph(yaxis_column_name):
+    nato_country_values_dict = get_values(yaxis_column_name, value_type='sum')
+    return {
+        'data': [go.Scatter(
+            x=list(nato_country_values_dict.keys()),
+            y=list(nato_country_values_dict.values())
+        )],
+        'layout': go.Layout(
+            xaxis={
+                'title': 'Year'
+            },
+            yaxis={
+                'title': 'Amount'
+            },
+            margin={'l': 100, 'b': 40, 't': 10, 'r': 0}
+        )
+    }
+
 
 
 @app.route("/", methods=['GET', 'POST'])

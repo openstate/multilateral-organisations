@@ -10,7 +10,7 @@
     {{ selection_form.csrf_token }}
 
     <div class="login-forms">
-            Show me for {{ selection_form.country }} the {{ selection_form.value_type }} in {{ selection_form.num_or_perc }}
+      Show me for {{ selection_form.country }} the {{ selection_form.value_type }} in {{ selection_form.num_or_perc }}
       {% for error in selection_form.country.errors %}
         <span style="color: red;">{{ error }}</span>
       {% endfor %}
@@ -26,6 +26,10 @@
   {{ year }}: {{ amount }}
   <br>
 {% endfor %}
+
+<div class="embed-responsive embed-responsive-16by9">
+  <iframe src="http://multilateral-organisations.openstate.eu/dash"></iframe>
+</div>
 
 {% endblock %}
 
