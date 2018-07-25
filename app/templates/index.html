@@ -1,38 +1,119 @@
 {% extends "base.html" %}
 {% block head %}
-  <meta property="og:title" content="Multilateral Organisations" />
+  <meta property="og:title" content="Open Multilaterals" />
   {{ super() }}
 {% endblock %}
 
 {% block content %}
-<div class="edit-form">
-  <form method="POST" action="">
-    {{ selection_form.csrf_token }}
-
-    <div class="login-forms">
-      Show me for {{ selection_form.country }} the {{ selection_form.value_type }} in {{ selection_form.num_or_perc }}
-      {% for error in selection_form.country.errors %}
-        <span style="color: red;">{{ error }}</span>
-      {% endfor %}
-      {{ selection_form.submit }}
-    </div>
-
-    <div>
-    </div>
-  </form>
-</div>
-
-{% for year, amount in nato_country_values_dict.items() %}
-  {{ year }}: {{ amount }}
-  <br>
-{% endfor %}
-
 <div class="embed-responsive embed-responsive-16by9">
-  <iframe src="http://multilateral-organisations.openstate.eu/dash"></iframe>
+  {% if debug %}
+  <iframe src="http://openmultilaterals.org/dash"></iframe>
+  {% else %}
+  <iframe src="https://openmultilaterals.org/dash"></iframe>
+  {% endif %}
 </div>
 
+<hr>
+
+<div class="row">
+  <div class="col-lg-12">
+    <h2>United Nations</h2>
+    <table id="datatables_un" class="display" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th>year</th>
+          <th>vendor country</th>
+          <th>vendor name</th>
+          <th>amount ($)</th>
+          <th>description</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-lg-12">
+    <h2>NATO</h2>
+    <table id="datatables_nato" class="display" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th>year</th>
+          <th>vendor country</th>
+          <th>vendor name</th>
+          <th>amount ($)</th>
+          <th>description</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-lg-12">
+    <h2>World Bank</h2>
+    <table id="datatables_world_bank" class="display" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th>year</th>
+          <th>vendor country</th>
+          <th>vendor name</th>
+          <th>amount ($)</th>
+          <th>description</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
+  <script type="text/javascript" charset="utf-8">
+    $(document).ready(function(){
+      var table_un = $('#datatables_un').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": "{{ url_for('datatables_un') }}",
+        "columnDefs": [
+          {"targets": 3, "className": "float-right"},
+          {"targets": 3, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
+        ],
+        "search": {"search": "Netherlands"},
+        "order": [[0, "desc"], [1, "asc"], [2, "asc"]]
+      });
+      var table_nato = $('#datatables_nato').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": "{{ url_for('datatables_nato') }}",
+        "columnDefs": [
+          {"targets": 3, "className": "float-right"},
+          {"targets": 3, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
+        ],
+        "search": {"search": "Netherlands"},
+        "order": [[0, "desc"], [1, "asc"], [2, "asc"]],
+      });
+      var table_world_bank = $('#datatables_world_bank').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": "{{ url_for('datatables_world_bank') }}",
+        "columnDefs": [
+          {"targets": 3, "className": "float-right"},
+          {"targets": 3, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
+        ],
+        "search": {"search": "Netherlands"},
+        "order": [[0, "desc"], [1, "asc"], [2, "asc"]]
+      });
+    });
+  </script>
 {% endblock %}

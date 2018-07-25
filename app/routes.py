@@ -7,178 +7,255 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
 
-from flask import render_template, request, redirect, url_for, flash, Markup
+from flask import render_template, request, redirect, url_for, flash, Markup, jsonify
 from sqlalchemy.sql import func
 
 from app import app, dash_app, db
-from app.forms import SelectionForm
-from app.models import NATO
+from app.models import UN, NATO, WorldBank
 
-from collections import defaultdict
+from datatables import ColumnDT, DataTables
+
+from collections import defaultdict, OrderedDict
 from math import ceil
+# Use simplejson as it can deal with Decimal
+import simplejson as json
 
 
 # Retrieve either the sum of the amounts or number of transactions (len)
 # per country
-def get_values(country, value_type='sum'):
+def get_values(country, organisation, value_type='sum'):
     # If country is 'all' retrieve data of all countries
     if country == 'all':
-        nato_country_records = NATO.query.with_entities(NATO.year, NATO.amount).all()
+        if organisation == 'United Nations':
+            country_records = UN.query.with_entities(UN.year, UN.amount).all()
+        elif organisation == 'NATO':
+            country_records = NATO.query.with_entities(NATO.year, NATO.amount).all()
+        elif organisation == 'World Bank':
+            country_records = WorldBank.query.with_entities(WorldBank.year, WorldBank.amount).all()
+    # Else only retrieve the records of the selected country
     else:
-        nato_country_records = NATO.query.filter_by(vendor_country=country).with_entities(NATO.year, NATO.amount).all()
+        if organisation == 'United Nations':
+            country_records = UN.query.filter_by(vendor_country=country).with_entities(UN.year, UN.amount).all()
+        elif organisation == 'NATO':
+            country_records = NATO.query.filter_by(vendor_country=country).with_entities(NATO.year, NATO.amount).all()
+        elif organisation == 'World Bank':
+            country_records = WorldBank.query.filter_by(vendor_country=country).with_entities(WorldBank.year, WorldBank.amount).all()
 
-    nato_records_dict = defaultdict(list)
-    for record in nato_country_records:
-        nato_records_dict[record[0]].append(record[1])
+    records_dict = defaultdict(list)
+    for record in country_records:
+        records_dict[record[0]].append(record[1])
 
-    nato_values_dict = {}
-    for year, amounts in nato_records_dict.items():
+    values_dict = {}
+    for year, amounts in records_dict.items():
         if value_type == 'sum':
-            nato_values_dict[year] = sum(amounts)
+            values_dict[year] = sum(amounts)
         elif value_type == 'len':
-            nato_values_dict[year] = len(amounts)
+            values_dict[year] = len(amounts)
 
-    return nato_values_dict
+    return values_dict
 
 
-## Dash visualisation
-# Retrieve unique countries
-unique_countries = NATO.query.with_entities(NATO.vendor_country).distinct().all()
-app.logger.info(unique_countries)
+# Create the update for the Dash graph callback
+def create_update(country, sum_or_len, numbers_or_percentages, organisation):
+    # Retrieve values
+    country_values_dict = get_values(country, organisation, sum_or_len)
+    if numbers_or_percentages == 'percentages':
+        all_values_dict = get_values('all', organisation , sum_or_len)
+        for year, amount in country_values_dict.items():
+            country_values_dict[year] = amount / all_values_dict[year] * 100
 
-# Layout
-dash_app.layout = html.Div(children=[
-    dcc.Dropdown(
-        id='yaxis-column',
-        options=[{'label': i[0], 'value': i[0]} for i in unique_countries],
-        value='Netherlands'
-    ),
+    # Sort the dict by the keys (i.e., year) otherwise the graph line
+    # goes crazy
+    sorted_country_values_dict = OrderedDict(sorted(country_values_dict.items()))
 
-    dcc.Graph(id='indicator-graphic')
-])
-
-# Update callback for figure
-@dash_app.callback(
-    dash.dependencies.Output('indicator-graphic', 'figure'),
-    [
-        dash.dependencies.Input('yaxis-column', 'value')
-    ]
-)
-def update_graph(yaxis_column_name):
-    nato_country_values_dict = get_values(yaxis_column_name, value_type='sum')
     return {
         'data': [go.Scatter(
-            x=list(nato_country_values_dict.keys()),
-            y=list(nato_country_values_dict.values())
+            x=list(sorted_country_values_dict.keys()),
+            y=list(sorted_country_values_dict.values())
         )],
         'layout': go.Layout(
             xaxis={
-                'title': 'Year'
+                'title': 'year'
             },
             yaxis={
-                'title': 'Amount'
+                'title': 'amount ($)'
             },
-            margin={'l': 100, 'b': 40, 't': 10, 'r': 0}
+            margin={'l': 80, 'b': 40, 't': 80, 'r': 0},
+            title=organisation
         )
     }
 
 
+## Dash visualisation
+# Creates the options list containing all unique countries
+values = NATO.query.with_entities(NATO.vendor_country).distinct().all()
+values += UN.query.with_entities(UN.vendor_country).distinct().all()
+values += WorldBank.query.with_entities(WorldBank.vendor_country).distinct().all()
+unique_countries = [{'label': i[0], 'value': i[0]} for i in sorted(set(values))]
+
+# Layout
+dash_app.layout = html.Div(children=[
+    'Show me for ',
+    dcc.Dropdown(
+        id='country',
+        options=unique_countries,
+        value='Netherlands'
+    ),
+    ' the ',
+    dcc.Dropdown(
+        id='sum_or_len',
+        options=[
+            {'label': 'total amount', 'value': 'sum'},
+            {'label': 'number of transactions', 'value': 'len'}
+        ],
+        value='sum'
+    ),
+    'in',
+    dcc.Dropdown(
+        id='numbers_or_percentages',
+        options=[
+            {'label': 'numbers', 'value': 'numbers'},
+            {'label': 'percentages', 'value': 'percentages'}
+        ],
+        value='numbers'
+    ),
+
+    dcc.Graph(
+        id='un',
+        style={'width': '33%', 'display': 'inline-block'},
+    ),
+    dcc.Graph(
+        id='nato',
+        style={'width': '33%', 'display': 'inline-block'},
+    ),
+    dcc.Graph(
+        id='world_bank',
+        style={'width': '33%', 'display': 'inline-block'},
+    ),
+])
+
+# Update callback for UN graph
+@dash_app.callback(
+    dash.dependencies.Output('un', 'figure'),
+    [
+        dash.dependencies.Input('country', 'value'),
+        dash.dependencies.Input('sum_or_len', 'value'),
+        dash.dependencies.Input('numbers_or_percentages', 'value')
+    ]
+)
+def update_graph(country, sum_or_len, numbers_or_percentages):
+    return create_update(country, sum_or_len, numbers_or_percentages, 'United Nations')
+
+# Update callback for NATO graph
+@dash_app.callback(
+    dash.dependencies.Output('nato', 'figure'),
+    [
+        dash.dependencies.Input('country', 'value'),
+        dash.dependencies.Input('sum_or_len', 'value'),
+        dash.dependencies.Input('numbers_or_percentages', 'value')
+    ]
+)
+def update_graph(country, sum_or_len, numbers_or_percentages):
+    return create_update(country, sum_or_len, numbers_or_percentages, 'NATO')
+
+# Update callback for World Bank graph
+@dash_app.callback(
+    dash.dependencies.Output('world_bank', 'figure'),
+    [
+        dash.dependencies.Input('country', 'value'),
+        dash.dependencies.Input('sum_or_len', 'value'),
+        dash.dependencies.Input('numbers_or_percentages', 'value')
+    ]
+)
+def update_graph(country, sum_or_len, numbers_or_percentages):
+    return create_update(country, sum_or_len, numbers_or_percentages, 'World Bank')
+
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    selection_form = SelectionForm()
-
-    # Create selection form
-    unique_countries = NATO.query.with_entities(NATO.vendor_country).distinct().all()
-    selection_form.country.choices = [(x[0], x[0]) for x in unique_countries]
-
-    # Set default selections or retrieve selections from user
-    selected_country = 'Netherlands'
-    value_type = 'sum'
-    num_or_perc = 'numbers'
-    if selection_form.validate_on_submit():
-        selected_country = selection_form.country.data
-        value_type = selection_form.value_type.data
-        num_or_perc = selection_form.num_or_perc.data
-
-    # Set form fields defaults to specified selections
-    selection_form.country.default = selected_country
-    selection_form.value_type.default = value_type
-    selection_form.num_or_perc.default = num_or_perc
-    selection_form.process()
-
-    # Retrieve values
-    nato_all_values_dict = get_values('all', value_type)
-    nato_country_values_dict = get_values(selected_country, value_type)
-
-    # Calculate percentages if needed
-    if num_or_perc == 'percentages':
-        for year, amount in nato_country_values_dict.items():
-            nato_country_values_dict[year] = amount / nato_all_values_dict[year] * 100
-
-    return render_template(
-        'index.html',
-        selection_form=selection_form,
-        nato_country_values_dict=nato_country_values_dict
-    )
+    return render_template('index.html', debug=app.debug)
 
 
-@app.route("/over-deze-website")
-def over_deze_website():
-    return render_template('over-deze-website.html')
+# Provides server side DataTables JSON for UN
+@app.route("/datatables-un")
+def datatables_un():
+    columns = [
+        ColumnDT(UN.year),
+        ColumnDT(UN.vendor_country),
+        ColumnDT(UN.vendor_name),
+        ColumnDT(UN.amount),
+        ColumnDT(UN.description)
+    ]
+
+    # Defining the initial query
+    query = db.session.query().select_from(UN)
+
+    # Retrieve the GET parameters coming from the user
+    params = request.args.to_dict()
+
+    # Instantiate a DataTable for the query and table needed
+    rowTable = DataTables(params, query, columns)
+
+    # returns what is needed by DataTable
+    return json.dumps(rowTable.output_result())
+
+
+# Provides server side DataTables JSON for NATO
+@app.route("/datatables-nato")
+def datatables_nato():
+    columns = [
+        ColumnDT(NATO.year),
+        ColumnDT(NATO.vendor_country),
+        ColumnDT(NATO.vendor_name),
+        ColumnDT(NATO.amount),
+        ColumnDT(NATO.description)
+    ]
+
+    # Defining the initial query
+    query = db.session.query().select_from(NATO)
+
+    # Retrieve the GET parameters coming from the user
+    params = request.args.to_dict()
+
+    # Instantiate a DataTable for the query and table needed
+    rowTable = DataTables(params, query, columns)
+
+    # returns what is needed by DataTable
+    return json.dumps(rowTable.output_result())
+
+
+# Provides server side DataTables JSON for World Bank
+@app.route("/datatables-world-bank")
+def datatables_world_bank():
+    columns = [
+        ColumnDT(WorldBank.year),
+        ColumnDT(WorldBank.vendor_country),
+        ColumnDT(WorldBank.vendor_name),
+        ColumnDT(WorldBank.amount),
+        ColumnDT(WorldBank.description)
+    ]
+
+    # Defining the initial query
+    query = db.session.query().select_from(WorldBank)
+
+    # Retrieve the GET parameters coming from the user
+    params = request.args.to_dict()
+
+    # Instantiate a DataTable for the query and table needed
+    rowTable = DataTables(params, query, columns)
+
+    # returns what is needed by DataTable
+    return json.dumps(rowTable.output_result())
+
+
+@app.route("/about")
+def about():
+    return render_template('about.html')
 
 
 @app.route("/data")
 def data():
     return render_template('data.html')
-
-
-# form + pagination
-@app.route("/gemeente-stemlokalen-overzicht", methods=['GET', 'POST'])
-def gemeente_stemlokalen_overzicht():
-    # Pagination
-    posts_per_page = app.config['POSTS_PER_PAGE']
-    page = request.args.get('page', 1, type=int)
-
-    # Use page 1 if a page lower than 1 is requested
-    if page < 1:
-        page = 1
-
-    # If the user requests a page larger than the largest page for which
-    # we have records to show, use that page instead of the requested
-    # one
-    if page > ceil(len(gemeente_draft_records) / posts_per_page):
-        page = ceil(len(gemeente_draft_records) / posts_per_page)
-
-    start_record = (page - 1) * posts_per_page
-    end_record = page * posts_per_page
-    if end_record > len(gemeente_draft_records):
-        end_record = len(gemeente_draft_records)
-    paged_draft_records = gemeente_draft_records[start_record:end_record]
-
-    previous_url = None
-    if page > 1:
-        previous_url = url_for(
-            'gemeente_stemlokalen_overzicht',
-            page=page - 1
-        )
-    next_url = None
-    if len(gemeente_draft_records) > page * posts_per_page:
-        next_url = url_for(
-            'gemeente_stemlokalen_overzicht',
-            page=page + 1
-        )
-
-    return render_template(
-        'gemeente-stemlokalen-overzicht.html',
-        page=page,
-        start_record=start_record + 1,
-        end_record=end_record,
-        total_records=len(gemeente_draft_records),
-        total_pages=ceil(len(gemeente_draft_records)/posts_per_page),
-        previous_url=previous_url,
-        next_url=next_url
-    )
 
 
 if __name__ == "__main__":

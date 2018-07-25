@@ -1,42 +1,9 @@
-#results-search {
-  .result {
-    h2 {
-      a {
-        color: inherit;
-      }
-    }
-    border-top: 1px solid #888;
-    margin-bottom: 20px;
-    h5 {
-      clear: both;
-      color: #888;
-    }
-    .pull-right {
-      margin-top: 20px;
-    }
-    p {
-      color: #888;
-    }
-  }
-}
-
-#form-search, #form-gemeente-search {
-  color: #c21889;
-  line-height: 30px;
-  .form-group {
-    width: 100%;
-    border-bottom: 1px solid #c21889;
-  }
-
-  input {
-    border: 0;
-    box-shadow: none;
-    width: 70%;
-  }
-}
-
 .breadcrumb {
   background-color: inherit;
   padding-left: 0;
   padding-right: 0;
+}
+
+.float-right {
+  float: right;
 }

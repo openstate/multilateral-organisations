@@ -39,7 +39,7 @@ if not app.debug:
             mailhost=(app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
             fromaddr=app.config['FROM'],
             toaddrs=app.config['ADMINS'],
-            subject='[Multilaterale Organisaties] website error',
+            subject='[Open Multilaterals] website error',
             credentials=auth,
             secure=secure
         )
@@ -63,4 +63,4 @@ if not app.debug:
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
     app.logger.setLevel(logging.INFO)
-    app.logger.info('Multilaterale Organisaties startup')
+    app.logger.info('Open Multilaterals startup')

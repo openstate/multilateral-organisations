@@ -11,9 +11,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
     SECRET_KEY = False
-    SERVER_NAME = 'multilateral-organisations.openstate.eu'
+    SERVER_NAME = 'openmultilaterals.org'
     PREFERRED_URL_SCHEME = 'https'
-    FORCE_HOST_FOR_REDIRECTS = 'multilateral-organisations.openstate.eu'
+    FORCE_HOST_FOR_REDIRECTS = 'openmultilaterals.org'
     USE_SESSION_FOR_NEXT = True
 
     BABEL_DEFAULT_LOCALE = 'nl'
@@ -28,5 +28,3 @@ class Config(object):
     MAIL_PASSWORD = ''
     FROM = ''
     ADMINS = ['']
-
-    POSTS_PER_PAGE = 20

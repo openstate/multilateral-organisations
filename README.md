@@ -1,4 +1,4 @@
-# Multilateral Organizations
+# Open Multilaterals
 Visualization showing how countries perform in getting contracts from multilateral organizations.
 
 
@@ -31,7 +31,7 @@ Visualization showing how countries perform in getting contracts from multilater
    - `cd docker`
    - `docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d`
    - Compile the assets, see the section below
-   - Retrieve the IP address of the nginx container `docker inspect mlo_nginx_1` and add it to your hosts file `/etc/hosts`: `<IP_address> multilateral-organisations.openstate.eu`
+   - Retrieve the IP address of the nginx container `docker inspect mlo_nginx_1` and add it to your hosts file `/etc/hosts`: `<IP_address> open-multilaterals.org`
 - Useful commands
    - Remove and rebuild everything (this also removes the MySQL volume containing all records (this is required if you want to load the .sql files from `docker/docker-entrypoint-initdb.d` again))
       - Production: `docker-compose down --rmi all && docker volume rm mlo_mlo-mysql-volume && docker-compose up -d`
@@ -57,7 +57,7 @@ To automatically compile the assets in development on any file changes (always r
 ## CLI
 To access the CLI of the app run `sudo docker exec -it mlo_app_1 bash` and run `flask`. Here are some CLI commands:
 
-- `flask mlo load_data --csv-file app/data/NAVO-BIDDING-PROC-COMBI.csv` loads the NATO records into the database
+- `flask mlo load_data --csv-file files/NATO.csv` loads the NATO records into the database
 
 ## To enter the MySQL database
    - `sudo docker exec -it mlo_mysql_1 bash`

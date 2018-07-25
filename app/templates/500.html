@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block head %}
-  <meta property="og:title" content="Waar is mijn stemlokaal - 500" />
+  <meta property="og:title" content="Open Multilaterals - 500" />
   {{ super() }}
 {% endblock %}
 
 {% block content %}
-  <h1>Er is een onverwachte fout opgetreden</h1>
-  <p>De websitebeheerder is op de hoogte gesteld. Excuses voor het ongemak!</p>
-  <p><a href="{{ url_for('index') }}">Naar de homepage</a></p>
+  <h1>An unexpected error occurred</h1>
+  <p>The website admin has been notified. Sorry for the inconvenience!</p>
+  <p><a href="{{ url_for('index') }}">Please visit the homepage</a></p>
 {% endblock %}

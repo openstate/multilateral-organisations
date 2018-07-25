@@ -11,9 +11,10 @@ dash==0.21.1
 dash-renderer==0.13.0
 dash-core-components==0.23.0
 dash-html-components==0.11.0
+sqlalchemy-datatables==1.2.0
+simplejson==3.16.0
 
 # Dependencies installed by the packages above
-Babel==2.5.3
 blinker==1.4
 certifi==2018.1.18
 chardet==3.0.4
@@ -24,12 +25,19 @@ itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
 requests==2.18.4
-SQLAlchemy==1.2.1
 urllib3==1.22
 Werkzeug==0.14.1
+
+# Flask-Babel
+Babel==2.5.3
+
+# Flask-SQLAlchemy
+SQLAlchemy==1.2.1
+
+# Flask-WTF
 WTForms==2.1
 
-# Dash dependencies
+# dash
 decorator==4.3.0
 Flask-Compress==1.4.0
 ipython-genutils==0.2.0
@@ -40,3 +48,6 @@ plotly==3.0.0
 retrying==1.3.3
 six==1.11.0
 traitlets==4.3.2
+
+# sqlalchemy-datatables
+python-dateutil==2.7.3
