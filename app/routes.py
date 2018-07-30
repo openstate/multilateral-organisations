@@ -7,7 +7,9 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
 
-from flask import render_template, request, redirect, url_for, flash, Markup, jsonify
+from flask import (
+    render_template, request, redirect, url_for, flash, Markup, jsonify
+)
 from sqlalchemy.sql import func
 
 from app import app, dash_app, db
@@ -29,17 +31,27 @@ def get_values(country, organisation, value_type='sum'):
         if organisation == 'United Nations':
             country_records = UN.query.with_entities(UN.year, UN.amount).all()
         elif organisation == 'NATO':
-            country_records = NATO.query.with_entities(NATO.year, NATO.amount).all()
+            country_records = NATO.query.with_entities(
+                NATO.year, NATO.amount
+            ).all()
         elif organisation == 'World Bank':
-            country_records = WorldBank.query.with_entities(WorldBank.year, WorldBank.amount).all()
+            country_records = WorldBank.query.with_entities(
+                WorldBank.year, WorldBank.amount
+            ).all()
     # Else only retrieve the records of the selected country
     else:
         if organisation == 'United Nations':
-            country_records = UN.query.filter_by(vendor_country=country).with_entities(UN.year, UN.amount).all()
+            country_records = UN.query.filter_by(
+                vendor_country=country
+            ).with_entities(UN.year, UN.amount).all()
         elif organisation == 'NATO':
-            country_records = NATO.query.filter_by(vendor_country=country).with_entities(NATO.year, NATO.amount).all()
+            country_records = NATO.query.filter_by(
+                vendor_country=country
+            ).with_entities(NATO.year, NATO.amount).all()
         elif organisation == 'World Bank':
-            country_records = WorldBank.query.filter_by(vendor_country=country).with_entities(WorldBank.year, WorldBank.amount).all()
+            country_records = WorldBank.query.filter_by(
+                vendor_country=country
+            ).with_entities(WorldBank.year, WorldBank.amount).all()
 
     records_dict = defaultdict(list)
     for record in country_records:
@@ -60,13 +72,15 @@ def create_update(country, sum_or_len, numbers_or_percentages, organisation):
     # Retrieve values
     country_values_dict = get_values(country, organisation, sum_or_len)
     if numbers_or_percentages == 'percentages':
-        all_values_dict = get_values('all', organisation , sum_or_len)
+        all_values_dict = get_values('all', organisation, sum_or_len)
         for year, amount in country_values_dict.items():
             country_values_dict[year] = amount / all_values_dict[year] * 100
 
     # Sort the dict by the keys (i.e., year) otherwise the graph line
     # goes crazy
-    sorted_country_values_dict = OrderedDict(sorted(country_values_dict.items()))
+    sorted_country_values_dict = OrderedDict(
+        sorted(country_values_dict.items())
+    )
 
     return {
         'data': [go.Scatter(
@@ -88,10 +102,18 @@ def create_update(country, sum_or_len, numbers_or_percentages, organisation):
 
 ## Dash visualisation
 # Creates the options list containing all unique countries
-values = NATO.query.with_entities(NATO.vendor_country).distinct().all()
-values += UN.query.with_entities(UN.vendor_country).distinct().all()
-values += WorldBank.query.with_entities(WorldBank.vendor_country).distinct().all()
-unique_countries = [{'label': i[0], 'value': i[0]} for i in sorted(set(values))]
+values = NATO.query.with_entities(
+    NATO.vendor_country
+).distinct().all()
+values += UN.query.with_entities(
+    UN.vendor_country
+).distinct().all()
+values += WorldBank.query.with_entities(
+    WorldBank.vendor_country
+).distinct().all()
+unique_countries = [
+    {'label': i[0], 'value': i[0]} for i in sorted(set(values))
+]
 
 # Layout
 dash_app.layout = html.Div(children=[
@@ -134,6 +156,7 @@ dash_app.layout = html.Div(children=[
     ),
 ])
 
+
 # Update callback for UN graph
 @dash_app.callback(
     dash.dependencies.Output('un', 'figure'),
@@ -144,7 +167,10 @@ dash_app.layout = html.Div(children=[
     ]
 )
 def update_graph(country, sum_or_len, numbers_or_percentages):
-    return create_update(country, sum_or_len, numbers_or_percentages, 'United Nations')
+    return create_update(
+        country, sum_or_len, numbers_or_percentages, 'United Nations'
+    )
+
 
 # Update callback for NATO graph
 @dash_app.callback(
@@ -158,6 +184,7 @@ def update_graph(country, sum_or_len, numbers_or_percentages):
 def update_graph(country, sum_or_len, numbers_or_percentages):
     return create_update(country, sum_or_len, numbers_or_percentages, 'NATO')
 
+
 # Update callback for World Bank graph
 @dash_app.callback(
     dash.dependencies.Output('world_bank', 'figure'),
@@ -168,7 +195,9 @@ def update_graph(country, sum_or_len, numbers_or_percentages):
     ]
 )
 def update_graph(country, sum_or_len, numbers_or_percentages):
-    return create_update(country, sum_or_len, numbers_or_percentages, 'World Bank')
+    return create_update(
+        country, sum_or_len, numbers_or_percentages, 'World Bank'
+    )
 
 
 @app.route("/", methods=['GET', 'POST'])

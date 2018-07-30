@@ -2,12 +2,7 @@
 *.pyc
 
 logs/*
-upload/*
 data/*
-exports/*
-
-.credentials/*
-client_secret.json
 
 docker/docker-entrypoint-initdb.d/*.csv
 docker/docker-entrypoint-initdb.d/*.zip
@@ -18,10 +13,6 @@ docker/docker-compose.yml
 app/static/*
 app/node_modules/*
 app/bower_components/*
-app/data/gemeenten.json
 
-files/deels_vooringevuld/*
-app/data/nieuwe-gemeenten.json
 config.py
 backup.sh
-last_processed_line.csv

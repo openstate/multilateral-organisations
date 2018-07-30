@@ -13,6 +13,7 @@ def MLO():
     """open multilaterals commands"""
     pass
 
+
 @MLO.command()
 @click.option('--csv-file', default='')
 def load_records(csv_file):
@@ -85,27 +86,61 @@ def load_records(csv_file):
                     award_date=datetime.strptime(
                         record['Award Date'], '%m/%d/%Y %I:%M:%S %p'
                     ) if 'Award Date' in record else None,
-                    commodity_category=record['Commodity Category'] if 'Commodity Category' in record else '',
-                    wbg_organization=record['WBG Organization'] if 'WBG Organization' in record else '',
-                    selection_number=record['Selection Number'] if 'Selection Number' in record else '',
-                    supplier_country_code=record['Supplier Country Code'] if 'Supplier Country Code' in record else '',
-                    fund_source=record['Fund Source'] if 'Fund Source' in record else '',
-                    vpu_description=record['VPU description'] if 'VPU description' in record else '',
+                    commodity_category=record[
+                        'Commodity Category'
+                    ] if 'Commodity Category' in record else '',
+                    wbg_organization=record[
+                        'WBG Organization']
+                    if 'WBG Organization' in record else '',
+                    selection_number=record[
+                        'Selection Number'
+                    ] if 'Selection Number' in record else '',
+                    supplier_country_code=record[
+                        'Supplier Country Code'
+                    ] if 'Supplier Country Code' in record else '',
+                    fund_source=record[
+                        'Fund Source'
+                    ] if 'Fund Source' in record else '',
+                    vpu_description=record[
+                        'VPU description'
+                    ] if 'VPU description' in record else '',
                     region=record['Region'] if 'Region' in record else '',
-                    borrower_country=record['Borrower Country'] if 'Borrower Country' in record else '',
-                    borrower_country_code=record['Borrower Country Code'] if 'Borrower Country Code' in record else '',
-                    project_id=record['Project ID'] if 'Project ID' in record else '',
-                    project_name=record['Project Name'] if 'Project Name' in record else '',
-                    procurement_type=record['Procurement Type'] if 'Procurement Type' in record else '',
-                    procurement_category=record['Procurement Category'] if 'Procurement Category' in record else '',
-                    procurement_method=record['Procurement Method'] if 'Procurement Method' in record else '',
-                    product_line=record['Product line'] if 'Product line' in record else '',
-                    major_sector=record['Major Sector'] if 'Major Sector' in record else '',
-                    wb_contract_number=record['WB Contract Number'] if 'WB Contract Number' in record else 0,
+                    borrower_country=record[
+                        'Borrower Country'
+                    ] if 'Borrower Country' in record else '',
+                    borrower_country_code=record[
+                        'Borrower Country Code'
+                    ] if 'Borrower Country Code' in record else '',
+                    project_id=record[
+                        'Project ID'
+                    ] if 'Project ID' in record else '',
+                    project_name=record[
+                        'Project Name'
+                    ] if 'Project Name' in record else '',
+                    procurement_type=record[
+                        'Procurement Type'
+                    ] if 'Procurement Type' in record else '',
+                    procurement_category=record[
+                        'Procurement Category'
+                    ] if 'Procurement Category' in record else '',
+                    procurement_method=record[
+                        'Procurement Method'
+                    ] if 'Procurement Method' in record else '',
+                    product_line=record[
+                        'Product line']
+                    if 'Product line' in record else '',
+                    major_sector=record[
+                        'Major Sector'
+                    ] if 'Major Sector' in record else '',
+                    wb_contract_number=record[
+                        'WB Contract Number']
+                    if 'WB Contract Number' in record else 0,
                     contract_signing_date=contract_signing_date,
                     borrower_contract_reference_number=record[
                         'Borrower Contract Reference Number'
-                    ] if 'Borrower Contract Reference Number' in record else '',
+                    ] if (
+                        'Borrower Contract Reference Number'
+                    ) in record else '',
                     contract_award_type=record['Contract Award Type']
                 )
 

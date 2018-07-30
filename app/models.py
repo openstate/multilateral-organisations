@@ -12,16 +12,19 @@ class Base(db.Model):
     amount = db.Column(db.Numeric(13, 2))
     description = db.Column(db.Text, index=True)
 
+
 # UN data
 class UN(Base):
     un_organisation = db.Column(db.String(32), index=True)
     contracts_or_orders = db.Column(db.String(12), index=True)
     number_of_contracts_or_orders = db.Column(db.Integer)
 
+
 # NATO data
 class NATO(Base):
     type = db.Column(db.String(24), index=True)
     period = db.Column(db.String(4), index=True)
+
 
 ## World Bank data
 # Combines data coming from Major Contract Awards and Corporate
