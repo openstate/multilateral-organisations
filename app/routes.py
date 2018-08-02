@@ -94,7 +94,6 @@ def create_update(country, sum_or_len, numbers_or_percentages, organisation):
             yaxis={
                 'title': 'amount ($)'
             },
-            margin={'l': 80, 'b': 40, 't': 80, 'r': 0},
             title=organisation
         )
     }
@@ -116,45 +115,54 @@ unique_countries = [
 ]
 
 # Layout
-dash_app.layout = html.Div(children=[
-    'Show me for ',
-    dcc.Dropdown(
-        id='country',
-        options=unique_countries,
-        value='Netherlands'
-    ),
-    ' the ',
-    dcc.Dropdown(
-        id='sum_or_len',
-        options=[
-            {'label': 'total amount', 'value': 'sum'},
-            {'label': 'number of transactions', 'value': 'len'}
-        ],
-        value='sum'
-    ),
-    'in',
-    dcc.Dropdown(
-        id='numbers_or_percentages',
-        options=[
-            {'label': 'numbers', 'value': 'numbers'},
-            {'label': 'percentages', 'value': 'percentages'}
-        ],
-        value='numbers'
-    ),
+dash_app.css.append_css({"external_url": "/static/dash.css"})
+dash_app.layout = html.Div(
+    children=[
+        'Show me for ',
+        dcc.Dropdown(
+            id='country',
+            options=unique_countries,
+            value='Netherlands'
+        ),
+        ' the ',
+        dcc.Dropdown(
+            id='sum_or_len',
+            options=[
+                {'label': 'total amount', 'value': 'sum'},
+                {'label': 'number of transactions', 'value': 'len'}
+            ],
+            value='sum'
+        ),
+        'in',
+        dcc.Dropdown(
+            id='numbers_or_percentages',
+            options=[
+                {'label': 'numbers', 'value': 'numbers'},
+                {'label': 'percentages', 'value': 'percentages'}
+            ],
+            value='numbers'
+        ),
 
-    dcc.Graph(
-        id='un',
-        style={'width': '33%', 'display': 'inline-block'},
-    ),
-    dcc.Graph(
-        id='nato',
-        style={'width': '33%', 'display': 'inline-block'},
-    ),
-    dcc.Graph(
-        id='world_bank',
-        style={'width': '33%', 'display': 'inline-block'},
-    ),
-])
+        html.Div(
+            dcc.Graph(
+                id='un',
+            ),
+            className="four columns"
+        ),
+        html.Div(
+            dcc.Graph(
+                id='nato',
+            ),
+            className="four columns"
+        ),
+        html.Div(
+            dcc.Graph(
+                id='world_bank',
+            ),
+            className="four columns"
+        ),
+    ],
+)
 
 
 # Update callback for UN graph
@@ -209,11 +217,11 @@ def index():
 @app.route("/datatables-un")
 def datatables_un():
     columns = [
-        ColumnDT(UN.year),
-        ColumnDT(UN.vendor_country),
-        ColumnDT(UN.vendor_name),
         ColumnDT(UN.amount),
-        ColumnDT(UN.description)
+        ColumnDT(UN.vendor_name),
+        ColumnDT(UN.vendor_country),
+        ColumnDT(UN.description),
+        ColumnDT(UN.year)
     ]
 
     # Defining the initial query
@@ -233,11 +241,11 @@ def datatables_un():
 @app.route("/datatables-nato")
 def datatables_nato():
     columns = [
-        ColumnDT(NATO.year),
-        ColumnDT(NATO.vendor_country),
-        ColumnDT(NATO.vendor_name),
         ColumnDT(NATO.amount),
-        ColumnDT(NATO.description)
+        ColumnDT(NATO.vendor_name),
+        ColumnDT(NATO.vendor_country),
+        ColumnDT(NATO.description),
+        ColumnDT(NATO.year)
     ]
 
     # Defining the initial query
@@ -257,11 +265,11 @@ def datatables_nato():
 @app.route("/datatables-world-bank")
 def datatables_world_bank():
     columns = [
-        ColumnDT(WorldBank.year),
-        ColumnDT(WorldBank.vendor_country),
-        ColumnDT(WorldBank.vendor_name),
         ColumnDT(WorldBank.amount),
-        ColumnDT(WorldBank.description)
+        ColumnDT(WorldBank.vendor_name),
+        ColumnDT(WorldBank.vendor_country),
+        ColumnDT(WorldBank.description),
+        ColumnDT(WorldBank.year)
     ]
 
     # Defining the initial query

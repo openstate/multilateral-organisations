@@ -55,9 +55,12 @@ To automatically compile the assets in development on any file changes (always r
 - `gulp watch`
 
 ## CLI
-To access the CLI of the app run `sudo docker exec -it mlo_app_1 bash` and run `flask`. Here are some CLI commands:
+To access the CLI of the app run `sudo docker exec -it mlo_app_1 bash` and run `flask`. Here are the CLI commands to load all data into the database (this might take some minutes):
 
-- `flask mlo load_data --csv-file files/NATO.csv` loads the NATO records into the database
+- `flask mlo load_records --csv-file files/NATO.csv`
+- `flask mlo load_records --csv-file files/UN.csv`
+- `flask mlo load_records --csv-file files/World_Bank_major_contract_awards.csv`
+- `flask mlo load_records --csv-file files/World_Bank_corporate_procurement_contract_awards.csv`
 
 ## To enter the MySQL database
    - `sudo docker exec -it mlo_mysql_1 bash`

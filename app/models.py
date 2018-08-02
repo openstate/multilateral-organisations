@@ -10,7 +10,7 @@ class Base(db.Model):
     vendor_country = db.Column(db.String(64), index=True)
     vendor_name = db.Column(db.String(128), index=True)
     amount = db.Column(db.Numeric(13, 2))
-    description = db.Column(db.Text, index=True)
+    description = db.Column(db.Text)
 
 
 # UN data

@@ -34,6 +34,7 @@ services:
     volumes:
       - mlo-mysql-volume:/var/lib/mysql
       - "./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+      - "./conf.d:/etc/mysql/conf.d"
     restart: always
   nodejs:
     image: node:5.4.1

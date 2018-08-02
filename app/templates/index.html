@@ -21,11 +21,11 @@
     <table id="datatables_un" class="display" cellspacing="0" width="100%">
       <thead>
         <tr>
-          <th>year</th>
-          <th>vendor country</th>
-          <th>vendor name</th>
           <th>amount ($)</th>
+          <th>vendor name</th>
+          <th>vendor country</th>
           <th>description</th>
+          <th>year</th>
         </tr>
       </thead>
       <tbody>
@@ -42,11 +42,11 @@
     <table id="datatables_nato" class="display" cellspacing="0" width="100%">
       <thead>
         <tr>
-          <th>year</th>
-          <th>vendor country</th>
-          <th>vendor name</th>
           <th>amount ($)</th>
+          <th>vendor name</th>
+          <th>vendor country</th>
           <th>description</th>
+          <th>year</th>
         </tr>
       </thead>
       <tbody>
@@ -63,11 +63,11 @@
     <table id="datatables_world_bank" class="display" cellspacing="0" width="100%">
       <thead>
         <tr>
-          <th>year</th>
-          <th>vendor country</th>
-          <th>vendor name</th>
           <th>amount ($)</th>
+          <th>vendor name</th>
+          <th>vendor country</th>
           <th>description</th>
+          <th>year</th>
         </tr>
       </thead>
       <tbody>
@@ -86,12 +86,12 @@
         "serverSide": true,
         "ajax": "{{ url_for('datatables_un') }}",
         "columnDefs": [
-          {"targets": 3, "className": "float-right"},
-          {"targets": 3, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
+          {"targets": 0, "className": "float-right"},
+          {"targets": 0, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
         ],
         "responsive": true,
         "search": {"search": "Netherlands"},
-        "order": [[0, "desc"], [1, "asc"], [2, "asc"]],
+        "order": [[4, "desc"], [2, "asc"], [1, "asc"]],
         "pagingType": "extStyle"
       });
       var table_nato = $('#datatables_nato').DataTable({
@@ -99,12 +99,12 @@
         "serverSide": true,
         "ajax": "{{ url_for('datatables_nato') }}",
         "columnDefs": [
-          {"targets": 3, "className": "float-right"},
-          {"targets": 3, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
+          {"targets": 0, "className": "float-right"},
+          {"targets": 0, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
         ],
         "responsive": true,
         "search": {"search": "Netherlands"},
-        "order": [[0, "desc"], [1, "asc"], [2, "asc"]],
+        "order": [[4, "desc"], [2, "asc"], [1, "asc"]],
         "pagingType": "extStyle"
       });
       var table_world_bank = $('#datatables_world_bank').DataTable({
@@ -112,12 +112,12 @@
         "serverSide": true,
         "ajax": "{{ url_for('datatables_world_bank') }}",
         "columnDefs": [
-          {"targets": 3, "className": "float-right"},
-          {"targets": 3, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
+          {"targets": 0, "className": "float-right"},
+          {"targets": 0, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
         ],
         "responsive": true,
         "search": {"search": "Netherlands"},
-        "order": [[0, "desc"], [1, "asc"], [2, "asc"]],
+        "order": [[4, "desc"], [2, "asc"], [1, "asc"]],
         "pagingType": "extStyle"
       });
     });
