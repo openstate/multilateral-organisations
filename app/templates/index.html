@@ -89,8 +89,10 @@
           {"targets": 3, "className": "float-right"},
           {"targets": 3, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
         ],
+        "responsive": true,
         "search": {"search": "Netherlands"},
-        "order": [[0, "desc"], [1, "asc"], [2, "asc"]]
+        "order": [[0, "desc"], [1, "asc"], [2, "asc"]],
+        "pagingType": "extStyle"
       });
       var table_nato = $('#datatables_nato').DataTable({
         "processing": true,
@@ -100,8 +102,10 @@
           {"targets": 3, "className": "float-right"},
           {"targets": 3, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
         ],
+        "responsive": true,
         "search": {"search": "Netherlands"},
         "order": [[0, "desc"], [1, "asc"], [2, "asc"]],
+        "pagingType": "extStyle"
       });
       var table_world_bank = $('#datatables_world_bank').DataTable({
         "processing": true,
@@ -111,8 +115,10 @@
           {"targets": 3, "className": "float-right"},
           {"targets": 3, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
         ],
+        "responsive": true,
         "search": {"search": "Netherlands"},
-        "order": [[0, "desc"], [1, "asc"], [2, "asc"]]
+        "order": [[0, "desc"], [1, "asc"], [2, "asc"]],
+        "pagingType": "extStyle"
       });
     });
   </script>

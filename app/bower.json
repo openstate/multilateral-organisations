@@ -7,13 +7,20 @@
     "bootstrap-filestyle": "1.2.3",
     "datatables": "1.10.19",
     "font-awesome": "4.5.0",
-    "fuse.js": "^3.2.0"
+    "fuse.js": "^3.2.0",
+    "datatables.net-plugins": "datatables-plugins#^1.10.19",
+    "datatables-responsive": "^2.2.3"
   },
   "overrides": {
     "font-awesome": {
       "main": [
         "./scss/font-awesome.scss",
         "./fonts/*"
+      ]
+    },
+    "datatables.net-plugins": {
+      "main": [
+        "pagination/extjs.js"
       ]
     }
   }

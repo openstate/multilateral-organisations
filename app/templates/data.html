@@ -10,18 +10,19 @@
   <br>
   <br>
   <ul>
-    <li><a href="/files/UN.csv">UN.csv</a></li>
-    <li><a href="/files/NATO.csv">NATO.csv</a></li>
-    <li><a href="/files/World_Bank_corporate_procurement_contract_awards.csv">World_Bank_corporate_procurement_contract_awards.csv</a></li>
-    <li><a href="/files/World_Bank_major_contract_awards.csv">World_Bank_major_contract_awards.csv</a></li>
+    <li><a href="/files/UN.csv">UN.csv</a> [original source in <a href="https://www.unops.org/news-and-stories/publications?theme%5B%5D=procurement&year=all" target="_blank">PDFs of Annual Statistical Reports on United Nations Procurement</a>; contracts are only published if they are above $30,000]</li>
+    <li><a href="/files/NATO.csv">NATO.csv</a> [original source in <a href="https://www.nspa.nato.int/en/organization/procurement/contract.htm" target="_blank">PDFs</a>; contracts are only published if they are above €75,200-€720,000 depending on the period]</li>
+    <li><a href="/files/World_Bank_corporate_procurement_contract_awards.csv">World_Bank_corporate_procurement_contract_awards.csv</a> [original source available as <a href="https://dev.socrata.com/foundry/finances.worldbank.org/bra2-9bqu" target="_blank">machine readable open data (CSV, JSON, API)</a>]</li>
+    <li><a href="/files/World_Bank_major_contract_awards.csv">World_Bank_major_contract_awards.csv</a> [original source available as <a href="https://dev.socrata.com/foundry/finances.worldbank.org/45tv-a6qy" target="_blank">machine readable open data (CSV, JSON, API)</a>]</li>
   </ul>
-
-  <h2>Description of fields available in all four datasets</h2>
+  <h2>Description of fields</h2>
+  <h3>Fields available in all four datasets</h3>
   <ul>
     <li><b>year</b>: The year in which the contract/order was awarded</li>
-    <li><b>vendor_country</b>: </li>
-    <li><b>vendor_name</b>: </li>
+    <li><b>vendor_country</b>: The country where the vendor organization is located</li>
+    <li><b>vendor_name</b>: The name of the vendor organization</li>
     <li><b>amount</b>: The amount in dollars awarded  for the contract/order; NATO values were in euro's so they have been converted to dollars using <a href="https://sdw.ecb.europa.eu/browseTable.do?node=qview&SERIES_KEY=120.EXR.D.USD.EUR.SP00.A&start=01-01-2008&end=28-06-2018&submitOptions.x=0&submitOptions.y=0&trans=N&q=&type">these exchange rates</a> (Set 'Transformation' to 'Annual Frequency' to get the annual averages)</li>
-    <li><b>description</b>: </li>
+    <li><b>description</b>: Description of the contract/order</li>
   </ul>
+  <p>All datasets have other fields available as well, but they are often specific to each dataset.</p>
 {% endblock %}
