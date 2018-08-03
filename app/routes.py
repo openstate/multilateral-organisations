@@ -10,7 +10,6 @@ import plotly.graph_objs as go
 from flask import (
     render_template, request, redirect, url_for, flash, Markup, jsonify
 )
-from sqlalchemy.sql import func
 
 from app import app, dash_app, db
 from app.models import UN, NATO, WorldBank
@@ -225,7 +224,10 @@ def datatables_un():
         ColumnDT(UN.vendor_name),
         ColumnDT(UN.vendor_country),
         ColumnDT(UN.description),
-        ColumnDT(UN.year)
+        ColumnDT(UN.year),
+        ColumnDT(UN.un_organisation),
+        ColumnDT(UN.contracts_or_orders),
+        ColumnDT(UN.number_of_contracts_or_orders)
     ]
 
     # Defining the initial query
@@ -249,7 +251,9 @@ def datatables_nato():
         ColumnDT(NATO.vendor_name),
         ColumnDT(NATO.vendor_country),
         ColumnDT(NATO.description),
-        ColumnDT(NATO.year)
+        ColumnDT(NATO.year),
+        ColumnDT(NATO.type),
+        ColumnDT(NATO.period)
     ]
 
     # Defining the initial query
@@ -273,7 +277,26 @@ def datatables_world_bank():
         ColumnDT(WorldBank.vendor_name),
         ColumnDT(WorldBank.vendor_country),
         ColumnDT(WorldBank.description),
-        ColumnDT(WorldBank.year)
+        ColumnDT(WorldBank.year),
+        ColumnDT(WorldBank.commodity_category),
+        ColumnDT(WorldBank.wbg_organization),
+        ColumnDT(WorldBank.selection_number),
+        ColumnDT(WorldBank.supplier_country_code),
+        ColumnDT(WorldBank.fund_source),
+        ColumnDT(WorldBank.vpu_description),
+        ColumnDT(WorldBank.region),
+        ColumnDT(WorldBank.borrower_country),
+        ColumnDT(WorldBank.borrower_country_code),
+        ColumnDT(WorldBank.project_id),
+        ColumnDT(WorldBank.project_name),
+        ColumnDT(WorldBank.procurement_type),
+        ColumnDT(WorldBank.procurement_category),
+        ColumnDT(WorldBank.procurement_method),
+        ColumnDT(WorldBank.product_line),
+        ColumnDT(WorldBank.major_sector),
+        ColumnDT(WorldBank.wb_contract_number),
+        ColumnDT(WorldBank.borrower_contract_reference_number),
+        ColumnDT(WorldBank.contract_award_type)
     ]
 
     # Defining the initial query
