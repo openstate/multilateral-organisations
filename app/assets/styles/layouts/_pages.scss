@@ -9,6 +9,13 @@
 }
 
 .pageinate_input_box {
-  width: 60px;
+  width: 40px;
   margin-left: 5px;
+}
+
+@media (max-width: 768px) {
+  .paginate_button {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
 }
