@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block head %}
+  <title>Open Multilaterals - Data</title>
   <meta property="og:title" content="Open Multilaterals - Data" />
   {{ super() }}
 {% endblock %}
@@ -10,10 +11,10 @@
   <br>
   <br>
   <ul>
-    <li><a href="/files/UN.csv">UN.csv</a> [original source in <a href="https://www.unops.org/news-and-stories/publications?theme%5B%5D=procurement&year=all" target="_blank">PDFs of Annual Statistical Reports on United Nations Procurement</a>; contracts are only published if they are above $30,000]</li>
-    <li><a href="/files/NATO.csv">NATO.csv</a> [original source in <a href="https://www.nspa.nato.int/en/organization/procurement/contract.htm" target="_blank">PDFs</a>; contracts are only published if they are above €75,200-€720,000 depending on the period]</li>
-    <li><a href="/files/World_Bank_corporate_procurement_contract_awards.csv">World_Bank_corporate_procurement_contract_awards.csv</a> [original source available as <a href="https://dev.socrata.com/foundry/finances.worldbank.org/bra2-9bqu" target="_blank">machine readable open data (CSV, JSON, API)</a>]</li>
-    <li><a href="/files/World_Bank_major_contract_awards.csv">World_Bank_major_contract_awards.csv</a> [original source available as <a href="https://dev.socrata.com/foundry/finances.worldbank.org/45tv-a6qy" target="_blank">machine readable open data (CSV, JSON, API)</a>]</li>
+    <li><a href="/files/UN.csv">UN</a> (CSV) [original source in <a href="https://www.unops.org/news-and-stories/publications?theme%5B%5D=procurement&year=all" target="_blank">PDFs of Annual Statistical Reports on United Nations Procurement</a>; contracts are only published if they are above $30,000]</li>
+    <li><a href="/files/NATO.csv">NATO</a> (CSV) [original source in <a href="https://www.nspa.nato.int/en/organization/procurement/contract.htm" target="_blank">PDFs</a>; contracts are only published if they are above €75,200-€720,000 depending on the period]</li>
+    <li><a href="/files/World_Bank_corporate_procurement_contract_awards.csv">World Bank corporate procurement contract awards</a> (CSV) [original source available as <a href="https://dev.socrata.com/foundry/finances.worldbank.org/bra2-9bqu" target="_blank">machine readable open data (CSV, JSON, API)</a>]</li>
+    <li><a href="/files/World_Bank_major_contract_awards.csv">World Bank major contract awards</a> (CSV) [original source available as <a href="https://dev.socrata.com/foundry/finances.worldbank.org/45tv-a6qy" target="_blank">machine readable open data (CSV, JSON, API)</a>]</li>
   </ul>
   <h2>Description of fields</h2>
   <h3>Fields available in all four datasets</h3>

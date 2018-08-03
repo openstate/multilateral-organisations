@@ -94,7 +94,11 @@ def create_update(country, sum_or_len, numbers_or_percentages, organisation):
             yaxis={
                 'title': 'amount ($)'
             },
-            title=organisation
+            title=organisation,
+            margin=go.Margin(
+                l=55,
+                r=55,
+            )
         )
     }
 
