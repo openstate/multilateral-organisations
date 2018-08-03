@@ -60,3 +60,26 @@ a {
   padding: 20px 40px;
   border: 15px white solid;
 }
+
+.resp-container {
+  position: relative;
+  overflow: hidden;
+  padding-top: 1523px;
+}
+
+@media(min-width:996px) {
+  .resp-container {
+    position: relative;
+    overflow: hidden;
+    padding-top: 623px;
+  }
+}
+
+.resp-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}

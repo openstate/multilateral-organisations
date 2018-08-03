@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="embed-responsive embed-responsive-16by9">
+<div class="resp-container">
   {% if debug %}
-  <iframe src="http://openmultilaterals.org/dash"></iframe>
+  <iframe class="resp-iframe" src="http://openmultilaterals.org/dash"></iframe>
   {% else %}
-  <iframe src="https://openmultilaterals.org/dash"></iframe>
+  <iframe class="resp-iframe" src="https://openmultilaterals.org/dash"></iframe>
   {% endif %}
 </div>
 
