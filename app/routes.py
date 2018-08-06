@@ -17,6 +17,7 @@ from app.models import UN, NATO, WorldBank
 from datatables import ColumnDT, DataTables
 
 from collections import defaultdict, OrderedDict
+from datetime import datetime
 from math import ceil
 # Use simplejson as it can deal with Decimal
 import simplejson as json
@@ -278,6 +279,7 @@ def datatables_world_bank():
         ColumnDT(WorldBank.vendor_country),
         ColumnDT(WorldBank.description),
         ColumnDT(WorldBank.year),
+        ColumnDT(WorldBank.award_date),
         ColumnDT(WorldBank.commodity_category),
         ColumnDT(WorldBank.wbg_organization),
         ColumnDT(WorldBank.selection_number),
@@ -295,6 +297,7 @@ def datatables_world_bank():
         ColumnDT(WorldBank.product_line),
         ColumnDT(WorldBank.major_sector),
         ColumnDT(WorldBank.wb_contract_number),
+        ColumnDT(WorldBank.contract_signing_date),
         ColumnDT(WorldBank.borrower_contract_reference_number),
         ColumnDT(WorldBank.contract_award_type)
     ]
@@ -307,6 +310,13 @@ def datatables_world_bank():
 
     # Instantiate a DataTable for the query and table needed
     rowTable = DataTables(params, query, columns)
+
+    # Convert datetime values to string
+    for row in rowTable.output_result()['data']:
+            if type(row['5']) == datetime:
+                row['5'] = row['5'].isoformat()[:10]
+            if type(row['23']) == datetime:
+                row['23'] = row['23'].isoformat()[:10]
 
     # returns what is needed by DataTable
     return json.dumps(rowTable.output_result())
