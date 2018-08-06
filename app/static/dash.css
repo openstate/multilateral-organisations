@@ -1,0 +1,11 @@
+.columns {
+  width: 100%;
+  float: left;
+}
+
+/* For devices larger than 550px */
+@media (min-width: 721px) {
+  .four.columns {
+    width: 33.3%;
+  }
+}
