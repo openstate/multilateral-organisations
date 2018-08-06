@@ -111,7 +111,7 @@
         "serverSide": true,
         "ajax": "{{ url_for('datatables_un') }}",
         "columnDefs": [
-          {"targets": 0, "className": "float-right"},
+          {"targets": 0, "className": "dt-body-right"},
           {"targets": 0, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
         ],
         "responsive": true,
@@ -124,7 +124,7 @@
         "serverSide": true,
         "ajax": "{{ url_for('datatables_nato') }}",
         "columnDefs": [
-          {"targets": 0, "className": "float-right"},
+          {"targets": 0, "className": "dt-body-right"},
           {"targets": 0, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
         ],
         "responsive": true,
@@ -137,7 +137,7 @@
         "serverSide": true,
         "ajax": "{{ url_for('datatables_world_bank') }}",
         "columnDefs": [
-          {"targets": 0, "className": "float-right"},
+          {"targets": 0, "className": "dt-body-right"},
           {"targets": 0, "render": $.fn.dataTable.render.number(',', '.', 2, '')}
         ],
         "responsive": true,
