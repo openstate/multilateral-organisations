@@ -10,7 +10,7 @@ docker/docker-entrypoint-initdb.d/*daily.sql
 docker/docker-entrypoint-initdb.d/*daily.sql.gz
 docker/docker-compose.yml
 
-app/static/*
+app/static/dist*
 app/node_modules/*
 app/bower_components/*
 
