@@ -95,7 +95,7 @@ def create_update(country, sum_or_len, numbers_or_percentages, organisation):
                 'title': 'amount ($)'
             },
             title=organisation,
-            margin=go.Margin(
+            margin=go.layout.Margin(
                 l=55,
                 r=55,
             )
