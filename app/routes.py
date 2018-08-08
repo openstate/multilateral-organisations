@@ -23,8 +23,8 @@ from math import ceil
 import simplejson as json
 
 
-# Retrieve either the sum of the amounts or number of transactions (len)
-# per country
+# Retrieve either the sum of the amounts or number of awarded contracts
+# (len) per country
 def get_values(country, organisation, value_type='sum'):
     # If country is 'all' retrieve data of all countries
     if country == 'all':
@@ -69,9 +69,14 @@ def get_values(country, organisation, value_type='sum'):
 
 # Create the update for the Dash graph callback
 def create_update(country, sum_or_len, numbers_or_percentages, organisation):
+    y_axis_title = 'amount ($)'
+    if sum_or_len == 'len':
+        y_axis_title = 'number of awarded contracts'
+
     # Retrieve values
     country_values_dict = get_values(country, organisation, sum_or_len)
     if numbers_or_percentages == 'percentages':
+        y_axis_title = 'percent (%)'
         all_values_dict = get_values('all', organisation, sum_or_len)
         for year, amount in country_values_dict.items():
             country_values_dict[year] = amount / all_values_dict[year] * 100
@@ -92,7 +97,8 @@ def create_update(country, sum_or_len, numbers_or_percentages, organisation):
                 'title': 'year'
             },
             yaxis={
-                'title': 'amount ($)'
+                'title': y_axis_title,
+                'rangemode': "tozero"
             },
             title=organisation,
             margin=go.layout.Margin(
@@ -122,46 +128,91 @@ unique_countries = [
 dash_app.css.append_css({"external_url": "/static/dash.css"})
 dash_app.layout = html.Div(
     children=[
-        'Show me for ',
-        dcc.Dropdown(
-            id='country',
-            options=unique_countries,
-            value='Netherlands'
-        ),
-        ' the ',
-        dcc.Dropdown(
-            id='sum_or_len',
-            options=[
-                {'label': 'total amount', 'value': 'sum'},
-                {'label': 'number of transactions', 'value': 'len'}
-            ],
-            value='sum'
-        ),
-        'in',
-        dcc.Dropdown(
-            id='numbers_or_percentages',
-            options=[
-                {'label': 'numbers', 'value': 'numbers'},
-                {'label': 'percentages', 'value': 'percentages'}
-            ],
-            value='numbers'
-        ),
+        html.Div([
+            html.P(
+                'Select country:',
+                style={'margin-bottom': '0'},
+            ),
+            html.Div(
+                [
+                    dcc.Dropdown(
+                        id='country',
+                        options=unique_countries,
+                        value='Netherlands'
+                    )
+                ],
+            ),
+        ]),
+        html.Div([
+            html.P(
+                'Show:',
+                style={'margin-bottom': '0'},
+            ),
+            html.Div(
+                [
+                    dcc.Dropdown(
+                        id='sum_or_len',
+                        options=[
+                            {'label': 'total amount', 'value': 'sum'},
+                            {
+                                'label': 'number of awarded contracts',
+                                'value': 'len'
+                            }
+                        ],
+                        value='sum'
+                    )
+                ],
+            ),
+        ]),
+        html.Div([
+            html.P(
+                'Format:',
+                style={'margin-bottom': '0'},
+            ),
+            html.Div(
+                [
+                    dcc.Dropdown(
+                        id='numbers_or_percentages',
+                        options=[
+                            {'label': 'numbers', 'value': 'numbers'},
+                            {'label': 'percentages', 'value': 'percentages'}
+                        ],
+                        value='numbers'
+                    )
+                ],
+            ),
+        ]),
 
         html.Div(
             dcc.Graph(
                 id='un',
+                config={
+                    'modeBarButtonsToRemove': [
+                        'select2d', 'lasso2d', 'autoScale2d'
+                    ]
+                },
             ),
             className="four columns"
         ),
         html.Div(
             dcc.Graph(
                 id='nato',
+                config={
+                    'modeBarButtonsToRemove': [
+                        'select2d', 'lasso2d', 'autoScale2d'
+                    ]
+                },
             ),
             className="four columns"
         ),
         html.Div(
             dcc.Graph(
                 id='world_bank',
+                config={
+                    'modeBarButtonsToRemove': [
+                        'select2d', 'lasso2d', 'autoScale2d'
+                    ]
+                },
             ),
             className="four columns"
         ),
@@ -312,14 +363,15 @@ def datatables_world_bank():
     rowTable = DataTables(params, query, columns)
 
     # Convert datetime values to string
-    for row in rowTable.output_result()['data']:
+    output_result = rowTable.output_result()
+    for row in output_result['data']:
             if type(row['5']) == datetime:
                 row['5'] = row['5'].isoformat()[:10]
             if type(row['23']) == datetime:
                 row['23'] = row['23'].isoformat()[:10]
 
     # returns what is needed by DataTable
-    return json.dumps(rowTable.output_result())
+    return json.dumps(output_result)
 
 
 @app.route("/about")

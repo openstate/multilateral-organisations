@@ -25,5 +25,5 @@
     <li><b>amount</b>: The amount in dollars awarded  for the contract/order; NATO values were in euro's so they have been converted to dollars using <a href="https://sdw.ecb.europa.eu/browseTable.do?node=qview&SERIES_KEY=120.EXR.D.USD.EUR.SP00.A&start=01-01-2008&end=28-06-2018&submitOptions.x=0&submitOptions.y=0&trans=N&q=&type">these exchange rates</a> (Set 'Transformation' to 'Annual Frequency' to get the annual averages)</li>
     <li><b>description</b>: Description of the contract/order</li>
   </ul>
-  <p>All datasets have other fields available as well, but they are often specific to each dataset.</p>
+  <p>All datasets have other fields available as well, but they are often specific to each dataset. Regarding the World Bank data: we combined both the corporate procurement contract award and major contract awards data in the chart and table at the home page of this website. Some of the columns are unique to each dataset and are thus empty in the table. Award Date, Commodity Category, WBG Organization, Selection Number, Fund Source, VPU description, Contract Award Type are unique to the corporate procurement contract awards dataset. The field Supplier Country Code is common to both. The rest of the fields are unique to the major contract awards dataset.</p>
 {% endblock %}
