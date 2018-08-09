@@ -10,6 +10,6 @@
 }
 
 /* https://community.plot.ly/t/modebar-appears-on-top-of-dropdown-list/6398 */
-.Select {
+.Select-menu-outer {
   z-index: 1002;
 }
