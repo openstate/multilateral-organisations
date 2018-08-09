@@ -334,7 +334,6 @@ def datatables_world_bank():
         ColumnDT(WorldBank.vendor_country),
         ColumnDT(WorldBank.description),
         ColumnDT(WorldBank.year),
-        ColumnDT(WorldBank.award_date),
         ColumnDT(WorldBank.commodity_category),
         ColumnDT(WorldBank.wbg_organization),
         ColumnDT(WorldBank.selection_number),
@@ -352,7 +351,6 @@ def datatables_world_bank():
         ColumnDT(WorldBank.product_line),
         ColumnDT(WorldBank.major_sector),
         ColumnDT(WorldBank.wb_contract_number),
-        ColumnDT(WorldBank.contract_signing_date),
         ColumnDT(WorldBank.borrower_contract_reference_number),
         ColumnDT(WorldBank.contract_award_type)
     ]
