@@ -104,7 +104,10 @@ def create_update(country, sum_or_len, numbers_or_percentages, organisation):
             margin=go.layout.Margin(
                 l=55,
                 r=55,
-            )
+            ),
+            font={
+                'family': "'Montserrat', sans-serif"
+            },
         )
     }
 
@@ -217,6 +220,7 @@ dash_app.layout = html.Div(
             className="four columns"
         ),
     ],
+    style={'font-family': "'Montserrat', sans-serif"},
 )
 
 
