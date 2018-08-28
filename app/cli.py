@@ -46,6 +46,7 @@ def load_records(csv_file):
                         ) else 0
                     ),
                     description=record['description'],
+                    country_code=record['country_code'],
                     un_organisation=record['un_organisation'],
                     contracts_or_orders=record['contracts_or_orders'],
                     number_of_contracts_or_orders=record[
@@ -60,6 +61,7 @@ def load_records(csv_file):
                     vendor_name=record['vendor_name'],
                     amount=Decimal(record['amount']),
                     description=record['description'],
+                    country_code=record['country_code'],
                     type=record['Type'],
                     period=record['Period'],
                 )
@@ -83,6 +85,7 @@ def load_records(csv_file):
                         Decimal(record['amount']) if record['amount'] else 0
                     ),
                     description=record['description'],
+                    country_code=record['country_code'],
                     award_date=datetime.strptime(
                         record['Award Date'], '%m/%d/%Y %I:%M:%S %p'
                     ) if 'Award Date' in record else None,

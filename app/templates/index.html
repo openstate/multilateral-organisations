@@ -8,96 +8,103 @@
 {% block content %}
 <div class="resp-container">
   {% if debug %}
-  <iframe class="resp-iframe" src="http://openmultilaterals.org/dash"></iframe>
+  <iframe class="resp-iframe" src="http://openmultilaterals.org/dash/"></iframe>
   {% else %}
-  <iframe class="resp-iframe" src="https://openmultilaterals.org/dash"></iframe>
+  <iframe class="resp-iframe" src="https://openmultilaterals.org/dash/"></iframe>
   {% endif %}
 </div>
 
-<hr>
+<h1>Show all the data</h1>
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#united-nations"><b>United Nations</b></a></li>
+  <li><a data-toggle="tab" href="#nato"><b>NATO</b></a></li>
+  <li><a data-toggle="tab" href="#world-bank"><b>World Bank</b></a></li>
+</ul>
 
-<div class="row">
-  <div class="col-lg-12">
-    <h2>United Nations</h2>
-    <table id="datatables_un" class="display" cellspacing="0" width="100%">
-      <thead>
-        <tr>
-          <th>amount ($)</th>
-          <th>vendor name</th>
-          <th>vendor country</th>
-          <th>description</th>
-          <th>year</th>
-          <th>un organisation</th>
-          <th>contracts or orders</th>
-          <th>number of contracts or order</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+<div class="tab-content">
+  <div id="united-nations" class="tab-pane fade in active">
+    <div class="row">
+      <div class="col-lg-12">
+        <br>
+        <table id="datatables_un" class="display" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th>amount ($)</th>
+              <th>vendor name</th>
+              <th>vendor country</th>
+              <th>description</th>
+              <th>year</th>
+              <th>un organisation</th>
+              <th>contracts or orders</th>
+              <th>number of contracts or order</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
-</div>
-
-<hr>
-
-<div class="row">
-  <div class="col-lg-12">
-    <h2>NATO</h2>
-    <table id="datatables_nato" class="display" cellspacing="0" width="100%">
-      <thead>
-        <tr>
-          <th>amount ($)</th>
-          <th>vendor name</th>
-          <th>vendor country</th>
-          <th>description</th>
-          <th>year</th>
-          <th>type</th>
-          <th>period</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+  <div id="nato" class="tab-pane fade">
+    <div class="row">
+      <div class="col-lg-12">
+        <br>
+        <table id="datatables_nato" class="display" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th>amount ($)</th>
+              <th>vendor name</th>
+              <th>vendor country</th>
+              <th>description</th>
+              <th>year</th>
+              <th>type</th>
+              <th>period</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
-</div>
-
-<hr>
-
-<div class="row">
-  <div class="col-lg-12">
-    <h2>World Bank</h2>
-    <table id="datatables_world_bank" class="display" cellspacing="0" width="100%">
-      <thead>
-        <tr>
-          <th>amount ($)</th>
-          <th>vendor name</th>
-          <th>vendor country</th>
-          <th>description</th>
-          <th>year</th>
-          <th>commodity category</th>
-          <th>wbg organization</th>
-          <th>selection number</th>
-          <th>supplier country code</th>
-          <th>fund source</th>
-          <th>vpu description</th>
-          <th>region</th>
-          <th>borrower country</th>
-          <th>borrower country code</th>
-          <th>project id</th>
-          <th>project name</th>
-          <th>procurement type</th>
-          <th>procurement category</th>
-          <th>procurement method</th>
-          <th>product line</th>
-          <th>major sector</th>
-          <th>wb contract number</th>
-          <th>borrower contract reference number</th>
-          <th>contract award type</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+  <div id="world-bank" class="tab-pane fade">
+    <div class="row">
+      <div class="col-lg-12">
+        <br>
+        <table id="datatables_world_bank" class="display" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th>amount ($)</th>
+              <th>vendor name</th>
+              <th>vendor country</th>
+              <th>description</th>
+              <th>year</th>
+              <th>commodity category</th>
+              <th>wbg organization</th>
+              <th>selection number</th>
+              <th>supplier country code</th>
+              <th>fund source</th>
+              <th>vpu description</th>
+              <th>region</th>
+              <th>borrower country</th>
+              <th>borrower country code</th>
+              <th>project id</th>
+              <th>project name</th>
+              <th>procurement type</th>
+              <th>procurement category</th>
+              <th>procurement method</th>
+              <th>product line</th>
+              <th>major sector</th>
+              <th>wb contract number</th>
+              <th>borrower contract reference number</th>
+              <th>contract award type</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}
@@ -105,6 +112,13 @@
 {% block scripts %}
 {{ super() }}
   <script type="text/javascript" charset="utf-8">
+    // Recalculate DataTable responsiveness after switching Bootstrap tab
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        $($.fn.dataTable.tables(true)).DataTable()
+           .columns.adjust()
+           .responsive.recalc();
+    });
+
     $(document).ready(function(){
       var table_un = $('#datatables_un').DataTable({
         "processing": true,

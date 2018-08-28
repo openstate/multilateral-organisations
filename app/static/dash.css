@@ -1,3 +1,18 @@
+body {
+  color: #3D4A4C;
+}
+
+h1 {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+@media (max-width: 719px) {
+  h1 {
+    font-size: 26px;
+  }
+}
+
 .columns {
   width: 100%;
   float: left;

@@ -23,6 +23,34 @@ from math import ceil
 import simplejson as json
 
 
+# Calculate choropleth data, this needs to be done once as it is static
+choropleth_dict = {}
+
+models = {
+    'United Nations': UN,
+    'NATO': NATO,
+    'World Bank': WorldBank
+}
+
+for model_name, model in models.items():
+    model_choropleth_records = model.query.with_entities(
+        model.year,
+        model.amount,
+        model.vendor_country,
+        model.country_code
+    ).all()
+    model_choropleth_dict = defaultdict(dict)
+    for line in model_choropleth_records:
+        if line[3] not in model_choropleth_dict[line[0]]:
+           model_choropleth_dict[line[0]][line[3]] = {
+                'amount': line[1],
+                'country_name': line[2]
+            }
+        else:
+            model_choropleth_dict[line[0]][line[3]]['amount'] += line[1]
+
+    choropleth_dict[model_name] = model_choropleth_dict
+
 # Retrieve either the sum of the amounts or number of awarded contracts
 # (len) per country
 def get_values(country, organisation, value_type='sum'):
@@ -68,6 +96,43 @@ def get_values(country, organisation, value_type='sum'):
 
 
 # Create the update for the Dash graph callback
+def create_choropleth_update(year, organisation):
+    return {
+        'data': [go.Choropleth(
+            locations=list(choropleth_dict[organisation][year].keys()),
+            z=[
+                x['amount'] for x in list(
+                    choropleth_dict[organisation][year].values()
+                )
+            ],
+            text=[
+                x['country_name'] for x in list(
+                    choropleth_dict[organisation][year].values()
+                )
+            ],
+        )],
+        'layout': go.Layout(
+            width=1000,
+            geo={
+                'showframe': False,
+                'projection': {'type': 'natural earth'},
+                'showland': True,
+                'landcolor': 'rgb(243, 243, 243)',
+                'showocean': True,
+                'oceancolor': 'steelblue',
+            },
+            margin=go.layout.Margin(
+                l=55,
+                r=55,
+            ),
+            font={
+                'family': "'Montserrat', sans-serif"
+            },
+        )
+    }
+
+
+# Create the update for the Dash graph callback
 def create_update(country, sum_or_len, numbers_or_percentages, organisation):
     y_axis_title = 'amount ($)'
     if sum_or_len == 'len':
@@ -98,13 +163,10 @@ def create_update(country, sum_or_len, numbers_or_percentages, organisation):
             },
             yaxis={
                 'title': y_axis_title,
-                'rangemode': "tozero"
+                'rangemode': "tozero",
+                'hoverformat': "$,.2f"
             },
             title=organisation,
-            margin=go.layout.Margin(
-                l=55,
-                r=55,
-            ),
             font={
                 'family': "'Montserrat', sans-serif"
             },
@@ -131,10 +193,20 @@ unique_countries = [
 dash_app.css.append_css({"external_url": "/static/dash.css"})
 dash_app.layout = html.Div(
     children=[
+        html.H1('Show the data on a map'),
+        dcc.Tabs(id="tabs", value='tab-un', children=[
+            dcc.Tab(label='United Nations', value='tab-un'),
+            dcc.Tab(label='NATO', value='tab-nato'),
+            dcc.Tab(label='World Bank', value='tab-wb'),
+        ]),
+        html.Div(id='tabs-content'),
+
+        html.Br(),
+
+        html.H1('Compare the data per country'),
         html.Div([
             html.P(
                 'Select country:',
-                style={'margin-bottom': '0'},
             ),
             html.Div(
                 [
@@ -151,21 +223,19 @@ dash_app.layout = html.Div(
                 'Show:',
                 style={'margin-bottom': '0'},
             ),
-            html.Div(
-                [
-                    dcc.Dropdown(
-                        id='sum_or_len',
-                        options=[
-                            {'label': 'total amount', 'value': 'sum'},
-                            {
-                                'label': 'number of awarded contracts',
-                                'value': 'len'
-                            }
-                        ],
-                        value='sum'
-                    )
-                ],
-            ),
+            html.Div([
+                dcc.Dropdown(
+                    id='sum_or_len',
+                    options=[
+                        {'label': 'total amount', 'value': 'sum'},
+                        {
+                            'label': 'number of awarded contracts',
+                            'value': 'len'
+                        }
+                    ],
+                    value='sum'
+                )
+            ]),
         ]),
         html.Div([
             html.P(
@@ -222,6 +292,169 @@ dash_app.layout = html.Div(
     ],
     style={'font-family': "'Montserrat', sans-serif"},
 )
+
+# Update tabs
+@dash_app.callback(
+    dash.dependencies.Output('tabs-content', 'children'),
+    [dash.dependencies.Input('tabs', 'value')]
+)
+def render_content(tab):
+    if tab == 'tab-un':
+        return html.Div([
+            html.Div([
+                dcc.Graph(
+                    id='un-choropleth',
+                    config={
+                        'modeBarButtonsToRemove': [
+                            'select2d', 'lasso2d'
+                        ]
+                    },
+                ),
+            ]),
+            html.Div(
+                [
+                    dcc.Slider(
+                        id='un-slider',
+                        min=2010,
+                        max=2017,
+                        value=2017,
+                        marks={
+                            2010: 2010,
+                            2011: 2011,
+                            2012: 2012,
+                            2013: 2014,
+                            2014: 2014,
+                            2015: 2015,
+                            2016: 2016,
+                            2017: 2017
+                        },
+                    ),
+                ],
+                style={
+                    'margin-left': '15',
+                    'margin-right': '60',
+                    'margin-bottom': '40'
+                },
+            ),
+        ])
+    elif tab == 'tab-nato':
+        return html.Div([
+            html.Div([
+                dcc.Graph(
+                    id='nato-choropleth',
+                    config={
+                        'modeBarButtonsToRemove': [
+                            'select2d', 'lasso2d'
+                        ]
+                    },
+                ),
+            ]),
+            html.Div(
+                [
+                    dcc.Slider(
+                        id='nato-slider',
+                        min=2009,
+                        max=2018,
+                        value=2018,
+                        marks={
+                            2009: 2009,
+                            2010: 2010,
+                            2011: 2011,
+                            2012: 2012,
+                            2013: 2014,
+                            2014: 2014,
+                            2015: 2015,
+                            2016: 2016,
+                            2017: 2017,
+                            2018: 2018
+                        },
+                    ),
+                ],
+                style={
+                    'margin-left': '15',
+                    'margin-right': '58',
+                    'margin-bottom': '40'
+                },
+            ),
+        ])
+    elif tab == 'tab-wb':
+        return html.Div([
+            html.Div([
+                dcc.Graph(
+                    id='wb-choropleth',
+                    config={
+                        'modeBarButtonsToRemove': [
+                            'select2d', 'lasso2d'
+                        ]
+                    },
+                ),
+            ]),
+            html.Div(
+                [
+                    dcc.Slider(
+                        id='wb-slider',
+                        min=2004,
+                        max=2018,
+                        value=2018,
+                        marks={
+                            2004: 2004,
+                            2005: 2005,
+                            2006: 2006,
+                            2007: 2007,
+                            2008: 2008,
+                            2009: 2009,
+                            2010: 2010,
+                            2011: 2011,
+                            2012: 2012,
+                            2013: 2014,
+                            2014: 2014,
+                            2015: 2015,
+                            2016: 2016,
+                            2017: 2017,
+                            2018: 2018
+                        },
+                    ),
+                ],
+                style={
+                    'margin-left': '15',
+                    'margin-right': '58',
+                    'margin-bottom': '40'
+                },
+            ),
+        ])
+
+
+# Update callback for UN choropleth graph
+@dash_app.callback(
+    dash.dependencies.Output('un-choropleth', 'figure'),
+    [
+        dash.dependencies.Input('un-slider', 'value')
+    ]
+)
+def update_graph(year):
+    return create_choropleth_update(year, 'United Nations')
+
+
+# Update callback for NATO choropleth graph
+@dash_app.callback(
+    dash.dependencies.Output('nato-choropleth', 'figure'),
+    [
+        dash.dependencies.Input('nato-slider', 'value')
+    ]
+)
+def update_graph(year):
+    return create_choropleth_update(year, 'NATO')
+
+
+# Update callback for World Bank choropleth graph
+@dash_app.callback(
+    dash.dependencies.Output('wb-choropleth', 'figure'),
+    [
+        dash.dependencies.Input('wb-slider', 'value')
+    ]
+)
+def update_graph(year):
+    return create_choropleth_update(year, 'World Bank')
 
 
 # Update callback for UN graph

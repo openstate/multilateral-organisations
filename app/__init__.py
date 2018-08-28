@@ -12,7 +12,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 
 app = Flask(__name__)
-dash_app = dash.Dash(__name__, server=app, url_base_pathname="/dash")
+dash_app = dash.Dash(__name__, server=app, url_base_pathname="/dash/")
+dash_app.config['suppress_callback_exceptions'] = True
 app.config.from_object(Config)
 
 db = SQLAlchemy(app)
