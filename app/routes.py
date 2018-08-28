@@ -106,10 +106,11 @@ def create_choropleth_update(year, organisation):
                 )
             ],
             text=[
-                x['country_name'] for x in list(
+                '{0}: ${1:,}'.format(x['country_name'], x['amount']) for x in list(
                     choropleth_dict[organisation][year].values()
                 )
             ],
+            hoverinfo="text",
         )],
         'layout': go.Layout(
             width=1000,
