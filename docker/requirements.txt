@@ -1,5 +1,5 @@
 # Packages directly required by the application
-Flask==0.12.2
+Flask==0.12.4
 Flask-Babel==0.11.2
 Flask-Mail==0.9.1
 Flask-SQLAlchemy==2.3.2
