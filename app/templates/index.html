@@ -156,9 +156,12 @@
         "order": [[4, "desc"], [2, "asc"], [1, "asc"]],
         "pagingType": "extStyle"
       });
-      setTimeout(function() {
-        $('.resp-iframe').width($('.resp-iframe').width() - 1);
-      }, 3000);
+      $('.resp-iframe').on("load", function() {
+        setTimeout(function() {
+          $('.resp-iframe').width($('.resp-iframe').width() - 1);
+          console.log('tester');
+        }, 1000);
+      });
     });
   </script>
 {% endblock %}
