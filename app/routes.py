@@ -113,7 +113,6 @@ def create_choropleth_update(year, organisation):
             hoverinfo="text",
         )],
         'layout': go.Layout(
-            width=1000,
             geo={
                 'showframe': False,
                 'projection': {'type': 'natural earth'},
