@@ -135,16 +135,26 @@ def create_choropleth_update(year, organisation):
 # Create the update for the Dash graph callback
 def create_update(country, sum_or_len, numbers_or_percentages, organisation):
     y_axis_title = 'amount ($)'
+    hoverformat = "$,.2f"
+    tickformat = ""
     if sum_or_len == 'len':
         y_axis_title = 'number of awarded contracts'
+        hoverformat = ""
 
     # Retrieve values
-    country_values_dict = get_values(country, organisation, sum_or_len)
+    if country == 'ALL COUNTRIES':
+        country_values_dict = get_values('all', organisation, sum_or_len)
+    else:
+        country_values_dict = get_values(country, organisation, sum_or_len)
+
     if numbers_or_percentages == 'percentages':
-        y_axis_title = 'percent (%)'
+        hoverformat = ".2%"
+        tickformat = ".2%"
+        if sum_or_len == 'sum':
+            y_axis_title = 'percentage'
         all_values_dict = get_values('all', organisation, sum_or_len)
         for year, amount in country_values_dict.items():
-            country_values_dict[year] = amount / all_values_dict[year] * 100
+            country_values_dict[year] = amount / all_values_dict[year]
 
     # Sort the dict by the keys (i.e., year) otherwise the graph line
     # goes crazy
@@ -164,7 +174,8 @@ def create_update(country, sum_or_len, numbers_or_percentages, organisation):
             yaxis={
                 'title': y_axis_title,
                 'rangemode': "tozero",
-                'hoverformat': "$,.2f"
+                'hoverformat': hoverformat,
+                'tickformat': tickformat
             },
             title=organisation,
             font={
@@ -188,6 +199,8 @@ values += WorldBank.query.with_entities(
 unique_countries = [
     {'label': i[0], 'value': i[0]} for i in sorted(set(values))
 ]
+
+unique_countries = [{'label': 'ALL COUNTRIES', 'value': 'ALL COUNTRIES'}] + unique_countries
 
 # Layout
 dash_app.css.append_css({"external_url": "/static/dash.css"})
