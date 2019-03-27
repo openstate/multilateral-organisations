@@ -612,11 +612,12 @@ def datatables_world_bank():
 
     # Convert datetime values to string
     output_result = rowTable.output_result()
-    for row in output_result['data']:
-            if type(row['5']) == datetime:
-                row['5'] = row['5'].isoformat()[:10]
-            if type(row['23']) == datetime:
-                row['23'] = row['23'].isoformat()[:10]
+    if 'data' in output_result:
+        for row in output_result['data']:
+                if type(row['5']) == datetime:
+                    row['5'] = row['5'].isoformat()[:10]
+                if type(row['23']) == datetime:
+                    row['23'] = row['23'].isoformat()[:10]
 
     # returns what is needed by DataTable
     return json.dumps(output_result)
