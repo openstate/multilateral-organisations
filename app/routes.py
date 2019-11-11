@@ -234,7 +234,7 @@ dash_app.layout = html.Div(
         html.Div([
             html.P(
                 'Show:',
-                style={'margin-bottom': '0'},
+                style={'marginBottom': '0'},
             ),
             html.Div([
                 dcc.Dropdown(
@@ -253,7 +253,7 @@ dash_app.layout = html.Div(
         html.Div([
             html.P(
                 'Format:',
-                style={'margin-bottom': '0'},
+                style={'marginBottom': '0'},
             ),
             html.Div(
                 [
@@ -303,7 +303,7 @@ dash_app.layout = html.Div(
             className="four columns"
         ),
     ],
-    style={'font-family': "'Montserrat', sans-serif"},
+    style={'fontFamily': "'Montserrat', sans-serif"},
 )
 
 # Update tabs
@@ -345,9 +345,9 @@ def render_content(tab):
                     ),
                 ],
                 style={
-                    'margin-left': '15',
-                    'margin-right': '60',
-                    'margin-bottom': '40'
+                    'marginLeft': '15px',
+                    'marginRight': '60px',
+                    'marginBottom': '40px'
                 },
             ),
         ])
@@ -386,9 +386,9 @@ def render_content(tab):
                     ),
                 ],
                 style={
-                    'margin-left': '15',
-                    'margin-right': '58',
-                    'margin-bottom': '40'
+                    'marginLeft': '15px',
+                    'marginRight': '58px',
+                    'marginBottom': '40px'
                 },
             ),
         ])
@@ -433,9 +433,9 @@ def render_content(tab):
                     ),
                 ],
                 style={
-                    'margin-left': '15',
-                    'margin-right': '58',
-                    'margin-bottom': '40'
+                    'marginLeft': '15px',
+                    'marginRight': '58px',
+                    'marginBottom': '40px'
                 },
             ),
         ])
