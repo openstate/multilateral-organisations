@@ -344,9 +344,9 @@ def render_content(tab):
                     ),
                 ],
                 style={
-                    'margin-left': '15',
-                    'margin-right': '60',
-                    'margin-bottom': '40'
+                    'marginLeft': '15px',
+                    'marginRight': '60px',
+                    'marginBottom': '40px'
                 },
             ),
         ])
@@ -384,9 +384,9 @@ def render_content(tab):
                     ),
                 ],
                 style={
-                    'margin-left': '15',
-                    'margin-right': '58',
-                    'margin-bottom': '40'
+                    'marginLeft': '15px',
+                    'marginRight': '58px',
+                    'marginBottom': '40px'
                 },
             ),
         ])
@@ -429,9 +429,9 @@ def render_content(tab):
                     ),
                 ],
                 style={
-                    'margin-left': '15',
-                    'margin-right': '58',
-                    'margin-bottom': '40'
+                    'marginLeft': '15px',
+                    'marginRight': '58px',
+                    'marginBottom': '40px'
                 },
             ),
         ])
