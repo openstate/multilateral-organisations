@@ -234,7 +234,7 @@ dash_app.layout = html.Div(
         html.Div([
             html.P(
                 'Show:',
-                style={'margin-bottom': '0'},
+                style={'marginBottom': '0'},
             ),
             html.Div([
                 dcc.Dropdown(
@@ -253,7 +253,7 @@ dash_app.layout = html.Div(
         html.Div([
             html.P(
                 'Format:',
-                style={'margin-bottom': '0'},
+                style={'marginBottom': '0'},
             ),
             html.Div(
                 [
@@ -303,7 +303,7 @@ dash_app.layout = html.Div(
             className="four columns"
         ),
     ],
-    style={'font-family': "'Montserrat', sans-serif"},
+    style={'fontFamily': "'Montserrat', sans-serif"},
 )
 
 # Update tabs
