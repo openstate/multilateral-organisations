@@ -329,8 +329,8 @@ def render_content(tab):
                     dcc.Slider(
                         id='un-slider',
                         min=2010,
-                        max=2017,
-                        value=2017,
+                        max=2018,
+                        value=2018,
                         marks={
                             2010: 2010,
                             2011: 2011,
@@ -339,7 +339,8 @@ def render_content(tab):
                             2014: 2014,
                             2015: 2015,
                             2016: 2016,
-                            2017: 2017
+                            2017: 2017,
+                            2018: 2018
                         },
                     ),
                 ],
@@ -367,8 +368,8 @@ def render_content(tab):
                     dcc.Slider(
                         id='nato-slider',
                         min=2009,
-                        max=2018,
-                        value=2018,
+                        max=2019,
+                        value=2019,
                         marks={
                             2009: 2009,
                             2010: 2010,
@@ -379,7 +380,8 @@ def render_content(tab):
                             2015: 2015,
                             2016: 2016,
                             2017: 2017,
-                            2018: 2018
+                            2018: 2018,
+                            2019: 2019
                         },
                     ),
                 ],
@@ -407,8 +409,8 @@ def render_content(tab):
                     dcc.Slider(
                         id='wb-slider',
                         min=2004,
-                        max=2018,
-                        value=2018,
+                        max=2020,
+                        value=2019,
                         marks={
                             2004: 2004,
                             2005: 2005,
@@ -424,7 +426,9 @@ def render_content(tab):
                             2015: 2015,
                             2016: 2016,
                             2017: 2017,
-                            2018: 2018
+                            2018: 2018,
+                            2019: 2019,
+                            2020: 2020
                         },
                     ),
                 ],
