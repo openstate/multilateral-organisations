@@ -6,9 +6,6 @@ Flask-WTF==0.14.2
 pytz==2019.3
 uWSGI==2.0.18
 PyMySQL==0.9.3
-dash==0.43.0
-dash-renderer==0.24.0
-dash-core-components==0.48.0
-dash-html-components==0.16.0
+dash==1.6.0
 sqlalchemy-datatables==2.0.1
 simplejson==3.16.0

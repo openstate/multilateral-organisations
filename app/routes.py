@@ -203,7 +203,6 @@ unique_countries = [
 unique_countries = [{'label': 'ALL COUNTRIES', 'value': 'ALL COUNTRIES'}] + unique_countries
 
 # Layout
-dash_app.css.append_css({"external_url": "/static/dash.css"})
 dash_app.layout = html.Div(
     children=[
         html.H1('Show the data on a map'),
