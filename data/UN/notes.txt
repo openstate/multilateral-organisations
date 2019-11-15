@@ -7,6 +7,8 @@
 - You now have a new `UN.csv` in `../../files`
 - Add the new file to git `git add -f <year>_raw.csv`
 - Push the changed/new files to GitHub
+- Update the dataset on https://data.openstate.eu
+- Update `app/templates/data.html` with information on when the latest was last updated and which date ranges are covered for this dataset
 
 
 # OLD METHOD, NOT RELEVANT SINCE 2019

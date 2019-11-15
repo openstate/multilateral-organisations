@@ -16,3 +16,5 @@
     - If you get a key error regarding `country_codes` then update `../country_codes.json` and add mapping between the missing country key and its 3 character ISO-3 abbreviation code, see https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
 - You now have a new `NATO.csv` in `../../files`
 - Push the changed files to GitHub
+- Update the dataset on https://data.openstate.eu
+- Update `app/templates/data.html` with information on when the latest was last updated and which date ranges are covered for this dataset

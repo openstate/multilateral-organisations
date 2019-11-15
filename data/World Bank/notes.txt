@@ -6,3 +6,5 @@
 - Run `./convert_wb_major_contracts.py`
 - You now have a new `World_Bank_corporate_procurement_contract_awards.csv` in `../../files`
 - Push the changed files to GitHub
+- Update the datasets on https://data.openstate.eu
+- Update `app/templates/data.html` with information on when the latest was last updated and which date ranges are covered for this dataset
