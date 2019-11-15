@@ -63,6 +63,9 @@ To access the CLI of the app run `sudo docker exec -it mlo_app_1 bash` and run `
 - `flask mlo load-records --csv-file files/World_Bank_corporate_procurement_contract_awards.csv`
 
 ## To enter the MySQL database
-   - `sudo docker exec -it mlo_mysql_1 bash`
-   - `mysql -p`
-   - Retrieve database password from `docker/docker-compose.yml` and enter it in the prompt
+- `sudo docker exec -it mlo_mysql_1 bash`
+- `mysql -p`
+- Retrieve database password from `docker/docker-compose.yml` and enter it in the prompt
+
+## Update the data
+- See the `data` folder for instructions on how to update the datasets
