@@ -1,0 +1,16 @@
+# How to update the UN data
+- Download the latest XLSX at the bottom of https://www.ungm.org/Shared/KnowledgeCenter/Pages/asr_data_supplier
+- Delete the first three rows and save as <year>_raw.csv (e.g., 2018_raw.csv)
+- Edit `convert_un_org.py`
+    - add the new year(s) to the `years` variable (they should probably all be 'xls' from now on, as you downloaded the xls in the steps above)
+- Run `./convert_un_org.py`
+- You now have a new `UN.csv` in `../../files`
+- Add the new file to git `git add -f <year>_raw.csv`
+- Push the changed/new files to GitHub
+
+
+# OLD METHOD, NOT RELEVANT SINCE 2019
+- You can find the latest Annual Statistical Report on UN Procurement at https://www.unops.org/news-and-stories/?type%5B%5D=publicationArticle&year=all
+- Open the PDF in evince and save only the pages with the 'Major purchase orders and contracts' tables
+- Create a specific Tabula command to get the row data from the pdf, e.g. for 2017: `java -jar tabula-1.0.2-jar-with-dependencies.jar -p all -a %5.0,0,91,100 -c 208,357,494 2017.pdf > 2017_raw.csv`
+    - This requires `tabula-1.0.2-jar-with-dependencies.jar` in the same directory, which you can download from https://github.com/tabulapdf/tabula-java/releases

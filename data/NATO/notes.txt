@@ -1,0 +1,18 @@
+# How to update the NATO data
+- Download any new PDF files from https://www.nspa.nato.int/en/organization/procurement/contract.htm
+- Update the dollar to euro conversion rate as described in convert_nato.py
+- Use https://smallpdf.com/nl/result#r=3aa1a3158527fd1f78c8705934d4ead5&t=pdf-to-excel to convert the PDF to XLSX
+    - The first part of the PDF (Orders Awarded) is in the first tab, the second part (Outline Agreement) is in the second tab
+    - Combine both tabs into 1 tab without any headers and add a fifth column describing whether the row is 'Orders Awarded' or 'Outline Agreement'
+    - Format the column with the values to not include any thousand separators
+    - Add the year in the 6th column
+    - Add 'Q1Q2' in the 7th column if the PDF comes from the first part of the year, otherwise add 'Q3Q4'
+- Save the spreadsheet as CSV and append it to `orig/NATO_raw.csv`
+- Run `./convert_nato.py`
+    - If you get an error because of a new (spelling of a) country, then add the country to the `../normalize_countries.json` mapping
+        - If the country is already present under a similar name, then make sure that you map the new name to the exact same country name that is used in the other mappings for that country
+        - If you the country is not present in any alternative spelling, then add a new entry for the country and map it to a name in line with the other countries (not full caps, etc)
+    - If you get a key error in this line `row.append(country_codes_nato[row[1]])`, then open `../country_codes_nato.json` and map the shortcode from the error to the country name
+    - If you get a key error regarding `country_codes` then update `../country_codes.json` and add mapping between the missing country key and its 3 character ISO-3 abbreviation code, see https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
+- You now have a new `NATO.csv` in `../../files`
+- Push the changed files to GitHub

@@ -1,0 +1,8 @@
+# How to update both World Bank datasets:
+- Download the latest "Corporate Procurement Contract Awards" from https://dev.socrata.com/foundry/finances.worldbank.org/a3d9-f9xv
+- Download the latest "Major Contract Awards" from https://dev.socrata.com/foundry/finances.worldbank.org/a3d9-f9xv
+- Run `./convert_wb_corporate_procurement_contracts.py`
+- You now have a new `World_Bank_major_contract_awards.csv` in `../../files`
+- Run `./convert_wb_major_contracts.py`
+- You now have a new `World_Bank_corporate_procurement_contract_awards.csv` in `../../files`
+- Push the changed files to GitHub

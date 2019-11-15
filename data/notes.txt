@@ -1,0 +1,2 @@
+See the `notes.txt` files in the NATO, UN and 'World Bank' directories for instructies on how to update the data.
+The scripts are a bit hacky and ugly, but they do the job XD
